@@ -86,13 +86,13 @@
 						<!-- Productos -->
 						<li class="menu-header small text-uppercase"><span class="menu-header-text">Productos</span></li>
 						<li class="menu-item">
-							<a href="#" class="menu-link">
+							<a href="productos-agregar.html" class="menu-link">
 								<i class="menu-icon tf-icons bx bx-collection"></i>
 								<div data-i18n="Basic">Agregar</div>
 							</a>
 						</li>
 						<li class="menu-item">
-							<a href="#" class="menu-link">
+							<a href="productos.html" class="menu-link">
 								<i class="menu-icon tf-icons bx bx-crown"></i>
 								<div data-i18n="Boxicons">Todos</div>
 							</a>
@@ -162,7 +162,145 @@
 									<div class="card mb-4">
 										<h5 class="card-header"><span class="text-muted fw-light">Almacén /</span> Mover</h5>
 										<div class="card-body">
-											<p class="card-text">Datos para mover</p>
+
+
+												<div class="container-fluid mb-2">
+													<div class="row">
+														<div class="col-xl-8 col-lg-8 align-self-start mt-1">
+															<div class="mb-2 row">
+																<label for="numeroDocumento" class="col-sm-3 col-form-label">Identidad personal:</label>
+																<div class="col-sm-8">
+																	<div class="input-group">
+																		<input list="clientes" type="search" class="form-control text-truncate" placeholder="DNI, RUC, etc." aria-label="Número de documento" aria-describedby="buscarDocumentos" id="customer-identification" name="customer-identification" oninput="completeDataCustomer(this)" onkeyup="fractuyo.findCustomer(this)" autocomplete="off">
+																		<datalist id="clientes"></datalist>
+																		<button type="button" class="btn btn-outline-primary" id="buscarDocumentos" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Guardar datos de cliente" onclick="fractuyo.addCustomer()"><i class="bx bxs-save"></i></button>
+																	</div>
+																</div>
+															</div>
+															<div class="mb-2 row">
+																<label for="customer-name" class="col-sm-3 col-form-label">Nombre personal:</label>
+																<div class="col-sm-8">
+																	<input type="text" class="form-control" aria-label="Razón Social del cliente" aria-describedby="razonadorSocial" id="customer-name" name="customer-name" placeholder="Nombre o razón social" autocomplete="off">
+																</div>
+															</div>
+														</div>
+														<div class="col-lg-4">
+															<div class="row">
+																<div class="col-lg-12 col-sm-12 col-12 mb-2">
+																	<label class="form-label" for="basic-default-message">Nota:</label>
+																	<textarea id="basic-default-message" name="mensaje" class="form-control" placeholder="Cualquier apunte opcional hasta 128 caracteres."></textarea>
+																</div>
+															</div><!-- .row -->
+														</div>
+													</div>
+
+													<div class="row my-2 justify-content-center border border-primary rounded">
+														<div class="col-12 mb-1">
+															<div class="row d-flex align-items-baseline py-2 bg-info rounded-top">
+																<div class="col-12 col-lg-8 text-lg-start text-center">
+																	<p class="m-lg-0 text-dark">Productos a mover</p>
+																</div>
+																<div class="col-12 col-lg-4 float-end text-lg-end text-center">
+																	<div class="input-group">
+																		<input type="search" class="form-control text-truncate pe-2" placeholder="Buscar por código" aria-label="Buscar por código" aria-describedby="buscador" id="codigoProductoBuscable">
+																		<button type="button" class="btn btn-outline-primary" id="buscarCodigo"><i class="bx bx-search"></i></button>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="col-12" id="items">
+
+															<div class="row">
+																<div class="col-md-1">
+																	<div class="row align-items-center">
+																		<div class="col-lg-12 col-3 text-lg-center text-end mb-1">
+																			<button type="button" class="btn btn-outline-secondary border-0"><i class="bx bxs-pencil"></i></button>
+																		</div>
+																		<div class="col-lg-12 col-3 text-lg-center text-start mb-1">
+																			<button type="button" class="btn btn-outline-danger border-0"><i class="bx bxs-trash"></i></button>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-11">
+																	<div class="row">
+																		<div class="col-md-4 mb-1">
+																			<div class="form-floating">
+																				<input required type="text" class="form-control" id="input-codigo" placeholder="Código único" readonly>
+																				<label for="input-codigo">Código</label>
+																			</div>
+																		</div>
+																		<div class="col-md-8 mb-1">
+																			<div class="form-floating">
+																				<input type="text" class="form-control" id="input-nombre" placeholder="Nombre del producto" readonly>
+																				<label for="input-nombre">Nombre</label>
+																			</div>
+																		</div>
+
+																		<div class="col-md-4 mb-1">
+																			<div class="form-floating">
+																				<input type="text" class="form-control" id="input-cantidad" placeholder="Cantidad">
+																				<label for="input-cantidad">Cantidad</label>
+																			</div>
+																		</div>
+																		<div class="col-md-4 mb-1">
+																			<div class="form-floating">
+																				<input type="number" class="form-control" id="input-valor" placeholder="Valor unitario" readonly>
+																				<label for="input-valor">Valor</label>
+																			</div>
+																		</div>
+																		<div class="col-md-4 mb-1">
+																			<div class="form-floating">
+																				<input readonly type="number" class="form-control" id="input-subtotal" placeholder="Subtotal">
+																				<label for="input-subtotal">Subtotal</label>
+																			</div>
+																		</div>
+																	</div>
+
+																</div>
+															</div>
+
+														</div>
+													</div>
+													<div class="position-relative top-100 start-50 translate-middle mt-0 text-center">
+														<button onclick="addRowForItem()" type="button" class="btn btn-outline-primary text-capitalize border-0 round-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Agregar un nuevo ítem"><i class="bx bxs-plus-circle"></i></button>
+													</div>
+													<div class="hstack gap-2">
+														<div class="ms-auto"><span class="text-blood">Descuento:</span></div>
+														<div class="p-1 text-end">
+															<div class="input-group">
+																<span class="input-group-text">S/</span>
+																<input type="number" name="descuento-global" class="form-control" value="0.00" placeholder="0.00" step="0.01" aria-label="Descuentos">
+															</div>
+														</div>
+													</div>
+													<div class="hstack gap-2 mb-lg-0 mb-5">
+														<div class="ms-auto"><span class="text-blood"><strong>Importe Total:</strong></span></div>
+														<div class="p-1 text-end">
+															<div class="input-group">
+																<span class="input-group-text">S/</span>
+																<input type="number" name="total-global" class="form-control" value="0.00" placeholder="0.00" aria-label="Total" readonly="">
+															</div>
+														</div>
+													</div>
+													<hr>
+													<div class="row">
+														<div class="col-12">
+															<div class="form-floating">
+																<select class="form-select" id="tipo" aria-label="Tipo de movimiento en almacén" name="type-code" required>
+																	<option hidden="" value="">Elegir&hellip;</option>
+																	<option value="0">Venta</option>
+																	<option value="1">Compra</option>
+																</select>
+																<label for="reference">Tipo de movimiento</label>
+															</div>
+														</div>
+														<div class="col-12 m-0 my-3 d-grid gap-2">
+															<button type="submit" class="btn btn-success text-capitalize fw-bold" name="trigger">Generar</button>
+														</div>
+													</div>
+												</div>
+
+
 										</div>
 									</div>
 								</div>
