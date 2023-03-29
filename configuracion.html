@@ -156,7 +156,65 @@
 									<div class="card mb-4">
 										<h5 class="card-header"><span class="text-muted fw-light">Almacén /</span> Configuración</h5>
 										<div class="card-body">
-											<p class="card-text">Datos para configurar</p>
+											<form onsubmit="cella.saveData(this);return false">
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label" for="ruc">RUC:</label>
+													<div class="col-sm-10">
+														<input type="text" class="form-control" id="ruc" name="ruc" placeholder="Identificador alfanumérico" maxlength="11">
+													</div>
+												</div>
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label" for="name">Nombre:</label>
+													<div class="col-sm-10">
+														<input type="text" class="form-control" id="name" name="name" placeholder="Razón social o nombre comercial">
+													</div>
+												</div>
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label">Ruta local:</label>
+													<div class="col-sm-10">
+														<button type="button" class="btn btn-secondary" onclick="cella.chooseDirHandle()">Elegir directorio</button>
+													</div>
+												</div>
+												<hr>
+
+												<div class="row mb-3">
+													<div class="col-sm-9">
+														<div class="form-check mb-2">
+															<input name="creating-database" class="form-check-input" type="checkbox" id="creating-database">
+															<label class="form-check-label" for="creating-database">Crear base de datos</label>
+														</div>
+														<div class="form-check">
+															<input name="creating-keys" class="form-check-input" type="checkbox" id="creating-keys" />
+															<label class="form-check-label" for="creating-keys">Almacenar llaves</label>
+														</div>
+													</div>
+												</div>
+
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label" for="public-key">Paillier público:</label>
+													<div class="col-sm-10">
+														<textarea id="public-key" name="public-key" class="form-control"
+															placeholder="Clave pública para encriptar"
+															aria-label="Descripción con mayor detalle"
+															aria-describedby="basic-icon-default-message2"></textarea>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label" for="private-key">Paillier privado:</label>
+													<div class="col-sm-10">
+														<textarea id="private-key" name="private-key" class="form-control"
+															placeholder="Clave privada para desencriptar"
+															aria-label="Descripción con mayor detalle"
+															aria-describedby="basic-icon-default-message2"></textarea>
+														<div class="form-text">Será encriptado</div>
+													</div>
+												</div>
+												<div class="row justify-content-end">
+													<div class="col-sm-10">
+														<button type="submit" class="btn btn-success">Guardar</button>
+													</div>
+												</div>
+											</form>
 										</div>
 									</div>
 								</div>
@@ -210,9 +268,12 @@
 		<!-- Vendors JS -->
 		<script data-senna-track="permanent" src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-3.2.5.min.js" integrity="sha256-BLeAd0Ai5RXB4wBuiOI3hgFV0MBzzEyBdL2YG5BwGb4=" crossorigin="anonymous"></script>
 		<script data-senna-track="permanent" src="https://cdn.jsdelivr.net/npm/senna@2.7.9/build/globals/senna-min.js" defer></script>
+		<script src="assets/js/sql-wasm.js"></script>
 
 		<!-- Main JS -->
 		<script src="assets/js/main.js"></script>
+		<script src="assets/js/passcode.js"></script>
+		<script src="assets/js/storage.js"></script>
 		<script src="assets/js/cella.js"></script>
 
 		<!-- Page JS -->

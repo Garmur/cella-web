@@ -3,7 +3,7 @@
 let menu, animate
 var app, cella
 
-window.onload = function() {
+window.onload = async function() {
 	Notiflix.Notify.init({position:"center-bottom"})
 	Notiflix.Report.init({svgSize:"64px",plainText:false})
 
@@ -109,6 +109,8 @@ window.onload = function() {
 	app.addRoutes([
 		new senna.Route(/.*/, senna.HtmlScreen)
 	])
+
+	await cella.init()
 
 	// Manage menu expanded/collapsed with templateCustomizer & local storage
 	//------------------------------------------------------------------
