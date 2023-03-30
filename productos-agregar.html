@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="assets/" data-template="vertical-menu-template-free">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
+		<title>Creando producto - Cella</title>
+		<meta name="description" content="" />
+
+		<!-- Favicon -->
+		<link data-senna-track="permanent" rel="icon" type="image/x-icon" href="favicon.ico" />
+
+		<!-- Fonts -->
+		<link data-senna-track="permanent" rel="preconnect" href="https://fonts.googleapis.com" />
+		<link data-senna-track="permanent" rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link data-senna-track="permanent" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+
+		<!-- Icons. Uncomment required icon fonts -->
+		<link data-senna-track="permanent" rel="stylesheet" href="assets/vendor/fonts/boxicons.css" />
+
+		<!-- Core CSS -->
+		<link data-senna-track="permanent" rel="stylesheet" href="assets/vendor/css/core.css" class="template-customizer-core-css" />
+		<link data-senna-track="permanent" rel="stylesheet" href="assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+		<link data-senna-track="permanent" rel="stylesheet" href="assets/css/demo.css" />
+
+		<!-- Vendors CSS -->
+		<link data-senna-track="permanent" rel="stylesheet" href="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+		<!-- Usabilidad CSS -->
+		<link data-senna-track="permanent" href="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-3.2.5.min.css" rel="stylesheet" integrity="sha256-4spYVEf9eBpgOmHFVl/GwBZTYdG8zbUZ0u4qDJ9FnSw=" crossorigin="anonymous">
+		<link data-senna-track="permanent" href="https://cdn.jsdelivr.net/npm/senna@2.7.9/build/senna.css" rel="stylesheet">
+
+		<!-- Helpers -->
+		<script data-senna-track="permanent" src="assets/vendor/js/helpers.js"></script>
+
+		<!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+		<!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+		<script data-senna-track="permanent" src="assets/js/config.js"></script>
+	</head>
+
+	<body>
+		<!-- Layout wrapper -->
+		<div class="layout-wrapper layout-content-navbar">
+			<div class="layout-container">
+				<!-- Menu -->
+
+				<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+					<div class="app-brand demo">
+						<a href="index.html" class="app-brand-link">
+							<span class="app-brand-logo demo">
+								<img width="25" alt="Cella logo" src="assets/img/logo.svg">
+							</span>
+							<span class="app-brand-text demo menu-text fw-bolder ms-2">Cella</span>
+						</a>
+
+						<a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+							<i class="bx bx-chevron-left bx-sm align-middle"></i>
+						</a>
+					</div>
+
+					<div id="navegador">
+						<ul class="menu-inner py-0">
+							<!-- Dashboard -->
+
+							<!-- Movimientos -->
+							<li class="menu-header small text-uppercase"><span class="menu-header-text">Movimientos</span></li>
+							<!-- Visualización -->
+							<li class="menu-item">
+								<a href="index.html" class="menu-link">
+									<i class="menu-icon tf-icons bx bx-home-circle"></i>
+									<div data-i18n="Analytics">Mover</div>
+								</a>
+							</li>
+							<li class="menu-item">
+								<a href="movimientos.html" class="menu-link">
+									<i class="menu-icon tf-icons bx bx-crown"></i>
+									<div data-i18n="Boxicons">Todos</div>
+								</a>
+							</li>
+
+							<!-- Productos -->
+							<li class="menu-header small text-uppercase"><span class="menu-header-text">Productos</span></li>
+							<li class="menu-item active">
+								<a href="productos-agregar.html" class="menu-link">
+									<i class="menu-icon tf-icons bx bx-collection"></i>
+									<div data-i18n="Basic">Agregar</div>
+								</a>
+							</li>
+							<li class="menu-item">
+								<a href="productos.html" class="menu-link">
+									<i class="menu-icon tf-icons bx bx-crown"></i>
+									<div data-i18n="Boxicons">Todos</div>
+								</a>
+							</li>
+
+							<!-- Reportes -->
+							<li class="menu-header small text-uppercase"><span class="menu-header-text">Reportes</span></li>
+							<li class="menu-item">
+								<a href="inventario.html" class="menu-link">
+									<i class="menu-icon tf-icons bx bx-collection"></i>
+									<div data-i18n="Basic">Inventario</div>
+								</a>
+							</li>
+
+							<!-- Extras -->
+							<li class="menu-header small text-uppercase"><span class="menu-header-text">Extras</span></li>
+							<li class="menu-item">
+								<a href="configuracion.html" class="menu-link">
+									<i class="menu-icon tf-icons bx bxs-wrench"></i>
+									<div data-i18n="Basic">Configuración</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</aside>
+				<!-- / Menu -->
+
+				<!-- Layout container -->
+				<div class="layout-page">
+					<!-- Navbar -->
+
+					<nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+						<div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+							<a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+								<i class="bx bx-menu bx-sm"></i>
+							</a>
+						</div>
+
+						<div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+							<!-- Search -->
+							<div class="navbar-nav align-items-center">
+									<form class="nav-item d-flex align-items-center">
+									<button type="submit" class="btn fs-4 lh-0 p-0"><i class="bx bx-search"></i></button>
+									<input type="text" class="form-control border-0 shadow-none" placeholder="Buscar movimiento&hellip;" aria-label="Buscar movimiento">
+									</form>
+							</div>
+							<!-- /Search -->
+
+							<ul class="navbar-nav flex-row align-items-center ms-auto">
+								<li class="nav-item lh-1 me-3">
+									<a href="#"><i class="bx bxs-basket fs-4 lh-0"></i></a>
+								</li>
+
+							</ul>
+						</div>
+					</nav>
+
+					<!-- / Navbar -->
+
+					<!-- Content wrapper -->
+					<div class="content-wrapper">
+						<!-- Content -->
+
+						<div class="container-xxl flex-grow-1 container-p-y" id="lienzo">
+							<!-- Basic Layout & Basic with Icons -->
+							<div class="row">
+								<!-- Basic Layout -->
+								<div class="col-xxl">
+									<div class="card mb-4">
+										<div class="card-header d-flex align-items-center justify-content-between">
+											<h5 class="mb-0"><span class="text-muted fw-light">Almacén /</span> Producto</h5>
+											<small class="text-muted float-end">Creando</small>
+										</div>
+										<div class="card-body">
+											<form onsubmit="cella.saveProduct(this);return false">
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label" for="codigo">Código:</label>
+													<div class="col-sm-10">
+														<input type="text" class="form-control" id="codigo" name="codigo" placeholder="Código único alfanumérico" required>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label" for="nombre">Nombre:</label>
+													<div class="col-sm-10">
+														<input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre corto" required>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label" for="descripcion">Descripción:</label>
+													<div class="col-sm-10">
+														<textarea id="descripcion" name="descripcion" class="form-control"
+															placeholder="Descripción con mayor detalle"
+															aria-label="Descripción con mayor detalle"></textarea>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label" for="precio">Precio:</label>
+													<div class="col-sm-10">
+														<div class="input-group input-group-merge">
+															<span class="input-group-text">S/</span>
+															<input
+																required
+																type="number"
+																min="0.01"
+																step="0.01"
+																id="precio"
+																name="precio"
+																class="form-control"
+																placeholder="10.00"
+																aria-label="Precio sugerido del producto"
+															>
+														</div>
+														<div class="form-text">Solo número con o sin punto decimal</div>
+													</div>
+												</div>
+												<div class="row mb-3">
+													<label class="col-sm-2 col-form-label" for="cantidad">Cantidad inicial:</label>
+													<div class="col-sm-10">
+														<input
+															type="number"
+															id="cantidad"
+															name="cantidad"
+															step="1"
+															min="0"
+															class="form-control phone-mask"
+															placeholder="Vacío representa cero"
+															aria-label="Cantidad actual"
+														>
+													</div>
+												</div>
+												<div class="row justify-content-end">
+													<div class="col-sm-10">
+														<button type="submit" class="btn btn-success">Crear</button>
+													</div>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- / Content -->
+
+						<!-- Footer -->
+						<footer class="content-footer footer bg-footer-theme">
+							<div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
+								<div class="mb-2 mb-md-0">
+									&copy;
+									<script>
+										document.write(new Date().getFullYear());
+									</script>
+									hecho para
+									<a href="https://www.terexor.com" target="_blank" class="footer-link fw-bolder">Terexor</a>
+								</div>
+								<div>
+									<a href="#" class="footer-link me-4" target="_blank">Licencia</a>
+									<a href="#" target="_blank" class="footer-link me-4">Más programas</a>
+									<a href="#" target="_blank" class="footer-link me-4">Documentación</a
+									>
+								</div>
+							</div>
+						</footer>
+						<!-- / Footer -->
+
+						<div class="content-backdrop fade"></div>
+					</div>
+					<!-- Content wrapper -->
+				</div>
+				<!-- / Layout page -->
+			</div>
+
+			<!-- Overlay -->
+			<div class="layout-overlay layout-menu-toggle"></div>
+		</div>
+		<!-- / Layout wrapper -->
+
+		<!-- Core JS -->
+		<!-- build:js assets/vendor/js/core.js -->
+		<script data-senna-track="permanent" src="assets/vendor/libs/jquery/jquery.js"></script>
+		<script data-senna-track="permanent" src="assets/vendor/libs/popper/popper.js"></script>
+		<script data-senna-track="permanent" src="assets/vendor/js/bootstrap.js"></script>
+		<script data-senna-track="permanent" src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+		<script data-senna-track="permanent" src="assets/vendor/js/menu.js"></script>
+		<!-- endbuild -->
+
+		<!-- Vendors JS -->
+		<script data-senna-track="permanent" src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-3.2.5.min.js" integrity="sha256-BLeAd0Ai5RXB4wBuiOI3hgFV0MBzzEyBdL2YG5BwGb4=" crossorigin="anonymous"></script>
+		<script data-senna-track="permanent" src="https://cdn.jsdelivr.net/npm/senna@2.7.9/build/globals/senna-min.js" defer></script>
+
+		<!-- Main JS -->
+		<script data-senna-track="permanent" src="assets/js/main.js"></script>
+		<script data-senna-track="permanent" src="assets/js/passcode.js"></script>
+		<script data-senna-track="permanent" src="assets/js/storage.js"></script>
+		<script data-senna-track="permanent" src="assets/js/cella.js"></script>
+
+		<!-- Page JS -->
+	</body>
+</html>
