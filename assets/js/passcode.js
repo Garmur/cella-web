@@ -5,7 +5,7 @@ class Passcode {
 	#currentPasscodeHash
 
 	async setupPasscode(passcode) {
-		this.#currentPasscodeHash = await sha256(passcode)
+		this.#currentPasscodeHash = await Passcode.sha256(passcode)
 	}
 
 	async decryptSession(encrypted, forgetPasscode = true) {
