@@ -90,7 +90,7 @@ class Cella {
 			if(publicKey.length) {
 				fileHandle = await this.#globalDirHandle.getFileHandle("public.key", { create: true })
 				writable = await fileHandle.createWritable()
-				await writable.write(encryptedData)
+				await writable.write(publicKey)
 				await writable.close()
 
 				if(privateKey.length) {
