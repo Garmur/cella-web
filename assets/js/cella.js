@@ -17,7 +17,7 @@ class Cella {
 
 	constructor() {
 		console.log("Cella started.")
-		#usable = false
+		this.#usable = false
 	}
 
 	isUsable() {
@@ -152,9 +152,9 @@ class Cella {
 		)
 	}
 
-	useDirectory() {
+	async useDirectory() {
 		try {
-			if(await this.#checkDirHandle) {
+			if(await this.#checkDirHandle()) {
 				let fileHandle, file, fileContent
 				try {
 					fileHandle = await this.#globalDirHandle.getFileHandle("cella.db", {})
@@ -180,7 +180,7 @@ class Cella {
 					console.log(e)
 				}
 
-				#usable = true
+				this.#usable = true
 				return
 			}
 			Notiflix.Notify.warning("No hay permisos para acceder a directorio local.")
@@ -191,7 +191,7 @@ class Cella {
 	}
 
 	async #checkDirHandle() {
-		if(this.#globalDirHandler instanceof FileSystemDirectoryHandle) {
+		if(this.#globalDirHandle instanceof FileSystemDirectoryHandle) {
 			//https://stackoverflow.com/a/66500919
 			const options = {
 				mode: "readwrite"
