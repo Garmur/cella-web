@@ -152,7 +152,7 @@ class Cella {
 		)
 	}
 
-	async #useDirectory() {
+	async useDirectory() {
 		try {
 			if(await this.#checkDirHandle()) {
 				let fileHandle, file, fileContent
@@ -219,7 +219,7 @@ class Cella {
 	async saveProduct(form) {
 		if(! this.#usable) {
 			this.#showUnreadMessage()
-			await this.#useDirectory()
+			await this.useDirectory()
 			return
 		}
 
@@ -281,5 +281,42 @@ class Cella {
 			Notiflix.Report.failure("Error para crear", e.message, "Aceptar")
 			console.error(e)
 		}
+	}
+
+	listProducts(lastIndex) {
+		const list = document.getElementById("lista-productos")
+		if(list == null) {
+			Notiflix.Notify.warning("No hay lugar para listar comprobantes.")
+			return
+		}
+
+		if(lastIndex == 0) {
+			const stmt = this.#db.prepare("SELECT seq FROM sqlite_sequence WHERE name = 'producto'");
+			if(stmt.step()) {
+				const row = stmt.get()
+				lastIndex = row[0]
+				++lastIndex
+			}
+			stmt.free()
+		}
+
+		this.#db.each("SELECT * FROM producto WHERE id < $lastindex ORDER BY id DESC LIMIT 8", {$lastindex: lastIndex},
+			function(row) {
+				const tr = list.insertRow()
+				tr.insertCell().appendChild(document.createTextNode(row.sku))
+				tr.insertCell().appendChild(document.createTextNode(row.nombre))
+				tr.insertCell().appendChild(document.createTextNode(row.config & 1 ? "Activo" : "Inactivo"))
+				tr.insertCell().appendChild(document.createTextNode(row.reserva))
+				tr.insertCell().appendChild(document.createTextNode(row.precio.toFixed(2)))
+				const editterButton = document.createElement("i")
+				editterButton.setAttribute("class", "bx bx-edit-alt me-1")
+				const editter = document.createElement("a")
+				editter.href = `/productos-editar.html?producto=${row.id}`
+				editter.setAttribute("class", "btn btn-secondary p-1")
+				editter.appendChild(editterButton)
+				editter.appendChild(document.createTextNode("Editar"))
+				tr.insertCell().appendChild(editter)
+			}
+		)
 	}
 }

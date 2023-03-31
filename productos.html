@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
-		<title>Configuración - Cella</title>
+		<title>Todos los productos - Cella</title>
 		<meta name="description" content="" />
 
 		<!-- Favicon -->
@@ -85,7 +85,7 @@
 									<div data-i18n="Basic">Agregar</div>
 								</a>
 							</li>
-							<li class="menu-item">
+							<li class="menu-item active">
 								<a href="productos.html" class="menu-link">
 									<i class="menu-icon tf-icons bx bx-crown"></i>
 									<div data-i18n="Boxicons">Todos</div>
@@ -103,7 +103,7 @@
 
 							<!-- Extras -->
 							<li class="menu-header small text-uppercase"><span class="menu-header-text">Extras</span></li>
-							<li class="menu-item active">
+							<li class="menu-item">
 								<a href="configuracion.html" class="menu-link">
 									<i class="menu-icon tf-icons bx bxs-wrench"></i>
 									<div data-i18n="Basic">Configuración</div>
@@ -153,70 +153,26 @@
 						<div class="container-xxl flex-grow-1 container-p-y" id="lienzo">
 							<div class="row">
 								<div class="col-12">
-									<div class="card mb-4">
-										<h5 class="card-header"><span class="text-muted fw-light">Almacén /</span> Configuración</h5>
-										<div class="card-body">
-											<form onsubmit="cella.saveData(this);return false">
-												<div class="row mb-3">
-													<label class="col-sm-2 col-form-label" for="ruc">RUC:</label>
-													<div class="col-sm-10">
-														<input type="text" class="form-control" id="ruc" name="ruc" placeholder="Identificador alfanumérico" maxlength="11">
-													</div>
-												</div>
-												<div class="row mb-3">
-													<label class="col-sm-2 col-form-label" for="name">Nombre:</label>
-													<div class="col-sm-10">
-														<input type="text" class="form-control" id="name" name="name" placeholder="Razón social o nombre comercial">
-													</div>
-												</div>
-												<div class="row mb-3">
-													<label class="col-sm-2 col-form-label">Ruta local:</label>
-													<div class="col-sm-10">
-														<button type="button" class="btn btn-secondary" onclick="cella.chooseDirHandle()">Elegir directorio</button>
-													</div>
-												</div>
-												<hr>
-
-												<div class="row mb-3">
-													<div class="col-sm-9">
-														<div class="form-check mb-2">
-															<input name="creating-database" class="form-check-input" type="checkbox" id="creating-database">
-															<label class="form-check-label" for="creating-database">Crear base de datos</label>
-														</div>
-														<div class="form-check">
-															<input name="creating-keys" class="form-check-input" type="checkbox" id="creating-keys" />
-															<label class="form-check-label" for="creating-keys">Almacenar llaves</label>
-														</div>
-													</div>
-												</div>
-
-												<div class="row mb-3">
-													<label class="col-sm-2 col-form-label" for="public-key">Paillier público:</label>
-													<div class="col-sm-10">
-														<textarea id="public-key" name="public-key" class="form-control"
-															placeholder="Clave pública para encriptar"
-															aria-label="Descripción con mayor detalle"
-															aria-describedby="basic-icon-default-message2"></textarea>
-													</div>
-												</div>
-												<div class="row mb-3">
-													<label class="col-sm-2 col-form-label" for="private-key">Paillier privado:</label>
-													<div class="col-sm-10">
-														<textarea id="private-key" name="private-key" class="form-control"
-															placeholder="Clave privada para desencriptar"
-															aria-label="Descripción con mayor detalle"
-															aria-describedby="basic-icon-default-message2"></textarea>
-														<div class="form-text">Será encriptado</div>
-													</div>
-												</div>
-												<div class="row justify-content-end">
-													<div class="col-sm-10">
-														<button type="submit" class="btn btn-success">Guardar</button>
-													</div>
-												</div>
-											</form>
+									<!-- Hoverable Table rows -->
+									<div class="card">
+										<h5 class="card-header"><span class="text-muted fw-light">Almacén /</span> Productos</h5>
+										<div class="table-responsive text-nowrap" id="lista">
+											<table class="table table-hover">
+												<thead>
+													<tr>
+														<th>Código</th>
+														<th>Nombre</th>
+														<th>Estado</th>
+														<th>Stock</th>
+														<th>Precio</th>
+														<th>Acción</th>
+													</tr>
+												</thead>
+												<tbody class="table-border-bottom-0" id="lista-productos"></tbody>
+											</table>
 										</div>
 									</div>
+									<!--/ Hoverable Table rows -->
 								</div>
 							</div>
 						</div>

@@ -104,10 +104,23 @@ window.onload = async function() {
 
 	cella = new Cella()
 
+	let pProductList = function(){}
+	pProductList.prototype = new senna.HtmlScreen()
+	pProductList.prototype.activate = function() {
+		if(cella.isUsable()) {
+			cella.listProducts(0)
+		}
+	}
+
 	app = new senna.App()
 	app.addSurfaces(["navegador", "lienzo"])
 	app.addRoutes([
-		new senna.Route(/.*/, senna.HtmlScreen)
+		new senna.Route("/", senna.HtmlScreen),
+		new senna.Route("/index.html", senna.HtmlScreen),
+		new senna.Route("/productos.html", pProductList),
+		new senna.Route("/configuracion.html", senna.HtmlScreen),
+		new senna.Route("/bloqueo.html", senna.HtmlScreen),
+		new senna.Route("/productos-agregar.html", senna.HtmlScreen)
 	])
 
 	await cella.init()
