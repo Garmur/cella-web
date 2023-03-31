@@ -109,7 +109,25 @@ window.onload = async function() {
 	pProductList.prototype.activate = function() {
 		if(cella.isUsable()) {
 			cella.listProducts(0)
+			return
 		}
+		Notiflix.Notify.warning("Falta acceso a los archivos.")
+	}
+
+	let pProductView = function(){}
+	pProductView.prototype = new senna.HtmlScreen()
+	pProductView.prototype.activate = function() {
+		if(cella.isUsable()) {
+			const productId = parseInt(new URLSearchParams(document.location.search).get("producto"))
+			if(productId >= 0) {
+				cella.viewProduct(productId)
+			}
+			else {
+				Notiflix.Report.warning("Identidad inconsiste", "El índice interno del producto debe igual o mayor que cero.", "Aceptar")
+			}
+			return
+		}
+		Notiflix.Notify.warning("Falta acceso a los archivos.")
 	}
 
 	app = new senna.App()
@@ -120,7 +138,8 @@ window.onload = async function() {
 		new senna.Route("/productos.html", pProductList),
 		new senna.Route("/configuracion.html", senna.HtmlScreen),
 		new senna.Route("/bloqueo.html", senna.HtmlScreen),
-		new senna.Route("/productos-agregar.html", senna.HtmlScreen)
+		new senna.Route("/productos-agregar.html", senna.HtmlScreen),
+		new senna.Route(/productos-editar\.html\??(?:&?[^=&]*=[^=&]*)*/, pProductView)
 	])
 
 	await cella.init()

@@ -223,7 +223,7 @@ class Cella {
 			return
 		}
 
-		Notiflix.Confirm.show( "Creando producto", "¿Registrar datos?", "Sí", "No",
+		Notiflix.Confirm.show( "Guardando producto", "¿Almacenar datos?", "Sí", "No",
 			async () => {
 				form.elements.trigger.disabled = true
 				await this.#createProduct(form)
@@ -244,11 +244,16 @@ class Cella {
 
 		const product = new Item()
 		try {
+			if(form.elements.identidad) {
+				product.setIdentity(parseInt(form.elements.identidad.value.trim()))
+			}
 			product.setSku(form.elements.codigo.value.trim())
 			product.setName(form.elements.nombre.value.trim())
 			product.setDescription(form.elements.descripcion.value.trim())
 			product.setPrice(Number(form.elements.precio.value.trim()))
-			product.setQuantity(Number(form.elements.cantidad.value.trim()))
+			if(form.elements.identidad == undefined) {
+				product.setQuantity(Number(form.elements.cantidad.value.trim()))
+			}
 		}
 		catch(e) {
 			Notiflix.Notify.warning(e.message)
@@ -258,14 +263,25 @@ class Cella {
 
 		try {
 			this.#db.run("BEGIN TRANSACTION")
-			this.#db.run("INSERT INTO producto VALUES(?,?,?,?,?,?,?)", [
-				null, 1,
-				product.getSku(),
-				product.getName(),
-				product.getDescription(),
-				product.getQuantity(),
-				product.getPrice()
-			])
+			if(product.getIdentity() > 0) {
+				this.#db.run("UPDATE producto SET sku = ?, nombre = ?, descripcion = ?, precio = ? WHERE id = ?", [
+					product.getSku(),
+					product.getName(),
+					product.getDescription(),
+					product.getPrice(),
+					product.getIdentity()
+				])
+			}
+			else {
+				this.#db.run("INSERT INTO producto VALUES(?,?,?,?,?,?,?)", [
+					null, 1,
+					product.getSku(),
+					product.getName(),
+					product.getDescription(),
+					product.getQuantity(),
+					product.getPrice()
+				])
+			}
 
 			//Saving db onto disk
 			let fileHandle = await this.#globalDirHandle.getFileHandle("cella.db", { create: true })
@@ -274,7 +290,12 @@ class Cella {
 			await writable.write(this.#db.export())
 			await writable.close()
 
-			Notiflix.Notify.success(`Producto "${product.getName()}" registrado.`)
+			if(product.getIdentity() > 0) {
+				Notiflix.Notify.success(`Producto "${product.getName()}" editado.`)
+			}
+			else {
+				Notiflix.Notify.success(`Producto "${product.getName()}" registrado.`)
+			}
 		}
 		catch(e) {
 			this.#db.run("ROLLBACK")
@@ -316,6 +337,24 @@ class Cella {
 				editter.appendChild(editterButton)
 				editter.appendChild(document.createTextNode("Editar"))
 				tr.insertCell().appendChild(editter)
+			}
+		)
+	}
+
+	viewProduct(identity) {
+		const form = document.getElementById("editor-producto")
+		if(form == null) {
+			Notiflix.Notify.warning("No hay lugar para editar datos.")
+			return
+		}
+
+		this.#db.each("SELECT id, config, sku, nombre, descripcion, precio FROM producto WHERE id = $identity LIMIT 1", {$identity: identity},
+			function(row) {
+				form.elements.identidad.value = row.id
+				form.elements.codigo.value = row.sku
+				form.elements.nombre.value = row.nombre
+				form.elements.descripcion.value = row.descripcion
+				form.elements.precio.value = row.precio
 			}
 		)
 	}
