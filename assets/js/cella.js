@@ -170,9 +170,9 @@ class Cella {
 				}
 
 				try {
-					fileHandle = await handleDirectoryConfig.getFileHandle("public.key", {})
+					fileHandle = await this.#globalDirHandle.getFileHandle("public.key", {})
 					file = await fileHandle.getFile()
-					content = await file.text()
+					fileContent = await file.text()
 					this.#publicKey = content
 				}
 				catch(e) {
