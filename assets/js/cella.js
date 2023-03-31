@@ -152,7 +152,7 @@ class Cella {
 		)
 	}
 
-	async useDirectory() {
+	async #useDirectory() {
 		try {
 			if(await this.#checkDirHandle()) {
 				let fileHandle, file, fileContent
@@ -210,5 +210,76 @@ class Cella {
 		}
 
 		throw new Error("No es directorio.")
+	}
+
+	#showUnreadMessage() {
+		Notiflix.Report.warning("Lectura pendiente", "Luego de aceptar el acceso al sistema de archivos se podrá usar Cella.", "Aceptar")
+	}
+
+	async saveProduct(form) {
+		if(! this.#usable) {
+			this.#showUnreadMessage()
+			await this.#useDirectory()
+			return
+		}
+
+		Notiflix.Confirm.show( "Creando producto", "¿Registrar datos?", "Sí", "No",
+			async () => {
+				form.elements.trigger.disabled = true
+				await this.#createProduct(form)
+				form.elements.trigger.disabled = false
+			}
+		)
+	}
+
+	async #createProduct(form) {
+		if(this.#globalDirHandle == undefined) {
+			Notiflix.Report.warning(
+				"Falta directorio",
+				"Debes elegir una carpeta en tu dispositivo para almacenar todos los datos de este formulario.",
+				"Aceptar"
+			)
+			return
+		}
+
+		const product = new Item()
+		try {
+			product.setSku(form.elements.codigo.value.trim())
+			product.setName(form.elements.nombre.value.trim())
+			product.setDescription(form.elements.descripcion.value.trim())
+			product.setPrice(Number(form.elements.precio.value.trim()))
+			product.setQuantity(Number(form.elements.cantidad.value.trim()))
+		}
+		catch(e) {
+			Notiflix.Notify.warning(e.message)
+			console.error(e)
+			return
+		}
+
+		try {
+			this.#db.run("BEGIN TRANSACTION")
+			this.#db.run("INSERT INTO producto VALUES(?,?,?,?,?,?,?)", [
+				null, 1,
+				product.getSku(),
+				product.getName(),
+				product.getDescription(),
+				product.getQuantity(),
+				product.getPrice()
+			])
+
+			//Saving db onto disk
+			let fileHandle = await this.#globalDirHandle.getFileHandle("cella.db", { create: true })
+			let writable = await fileHandle.createWritable()
+			this.#db.run("COMMIT")
+			await writable.write(this.#db.export())
+			await writable.close()
+
+			Notiflix.Notify.success(`Producto "${product.getName()}" registrado.`)
+		}
+		catch(e) {
+			this.#db.run("ROLLBACK")
+			Notiflix.Report.failure("Error para crear", e.message, "Aceptar")
+			console.error(e)
+		}
 	}
 }
