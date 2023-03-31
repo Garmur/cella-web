@@ -173,7 +173,7 @@ class Cella {
 					fileHandle = await this.#globalDirHandle.getFileHandle("public.key", {})
 					file = await fileHandle.getFile()
 					fileContent = await file.text()
-					this.#publicKey = content
+					this.#publicKey = fileContent
 				}
 				catch(e) {
 					Notiflix.Notify.warning("Falta clave pública.")
@@ -181,6 +181,7 @@ class Cella {
 				}
 
 				this.#usable = true
+				Notiflix.Notify.success("Datos cargados.")
 				return
 			}
 			Notiflix.Notify.warning("No hay permisos para acceder a directorio local.")
