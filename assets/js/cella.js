@@ -358,4 +358,143 @@ class Cella {
 			}
 		)
 	}
+
+	/**
+	 * Search and append item row if found it and there is not in form items.
+	 */
+	appendItem() {
+		const items = document.getElementById("items")
+		if(items == undefined) {
+			Notiflix.Notify.failure("No hay contenedor de ítems.")
+			return
+		}
+
+		const sku = document.getElementById("codigo-buscable").value.trim()
+		if(sku.length == 0) {
+			Notiflix.Notify.warning("Entrada para código está vacía.")
+			return
+		}
+		const product = new Item()
+
+		this.#db.each("SELECT id, config, sku, nombre, descripcion, precio FROM producto WHERE sku = $sku LIMIT 1", {$sku: sku},
+			function(row) {
+				product.setIdentity(row.id)
+				product.setSku(sku)
+				product.setName(row.nombre)
+				product.setDescription(row.descripcion)
+				product.setPrice(row.precio)
+			}
+		)
+
+		if(! product.getIdentity()) {
+			Notiflix.Notify.failure("No existe el código en el almacén.")
+			return
+		}
+
+		const itemRow = document.createElement("div")
+		itemRow.setAttribute("class", "row border-bottom mb-2")
+		items.append(itemRow)
+
+		const eraserCol = document.createElement("div")
+		eraserCol.setAttribute("class", "col-md-1")
+		itemRow.appendChild(eraserCol)
+
+		const eraserIcon = document.createElement("i")
+		eraserIcon.setAttribute("class", "bx bxs-trash")
+
+		const eraser = document.createElement("button")
+		eraser.type = "button"
+		eraser.setAttribute("class", "btn btn-outline-danger border-0")
+		eraser.appendChild(eraserIcon)
+		eraserCol.appendChild(eraser)
+
+		const dataCol = document.createElement("div")
+		dataCol.setAttribute("class", "col-md-11")
+		itemRow.appendChild(dataCol)
+
+		const datagroupRow = document.createElement("div")
+		datagroupRow.setAttribute("class", "row")
+		dataCol.appendChild(datagroupRow)
+
+		const skuCol = document.createElement("div")
+		skuCol.setAttribute("class", "col-md-4 mb-1")
+		datagroupRow.appendChild(skuCol)
+		const skuFloating = document.createElement("div")
+		skuFloating.setAttribute("class", "form-floating")
+		skuCol.appendChild(skuFloating)
+		const skuInput = document.createElement("input")
+		skuInput.value = product.getSku()
+		skuInput.required = true
+		skuInput.type = "text"
+		skuInput.setAttribute("class", "form-control")
+		skuInput.placeholder = "Código único"
+		skuInput.readonly = true
+		skuFloating.appendChild(skuInput)
+
+		const nameCol = document.createElement("div")
+		nameCol.setAttribute("class", "col-md-8 mb-1")
+		datagroupRow.appendChild(nameCol)
+		const nameFloating = document.createElement("div")
+		nameFloating.setAttribute("class", "form-floating")
+		nameCol.appendChild(nameFloating)
+		const nameInput = document.createElement("input")
+		nameInput.required = true
+		nameInput.type = "text"
+		nameInput.setAttribute("class", "form-control")
+		nameInput.placeholder = "Nombre"
+		nameInput.value = product.getName()
+		nameInput.readonly = true
+		nameFloating.appendChild(nameInput)
+
+		const quantityCol = document.createElement("div")
+		quantityCol.setAttribute("class", "col-md-4 mb-1")
+		datagroupRow.appendChild(quantityCol)
+		const quantityFloating = document.createElement("div")
+		quantityFloating.setAttribute("class", "form-floating")
+		quantityCol.appendChild(quantityFloating)
+		const quantityInput = document.createElement("input")
+		quantityInput.value = "1"
+		quantityInput.required = true
+		quantityInput.type = "text"
+		quantityInput.setAttribute("class", "form-control")
+		quantityInput.placeholder = "Cantidad"
+		quantityInput.readonly = true
+		quantityFloating.appendChild(quantityInput)
+
+		const priceCol = document.createElement("div")
+		priceCol.setAttribute("class", "col-md-4 mb-1")
+		datagroupRow.appendChild(priceCol)
+		const priceFloating = document.createElement("div")
+		priceFloating.setAttribute("class", "form-floating")
+		priceCol.appendChild(priceFloating)
+		const priceInput = document.createElement("input")
+		priceInput.value = product.getPrice(true)
+		priceInput.required = true
+		priceInput.type = "text"
+		priceInput.setAttribute("class", "form-control")
+		priceInput.placeholder = "Precio"
+		priceInput.readonly = true
+		priceFloating.appendChild(priceInput)
+
+		const subtotalCol = document.createElement("div")
+		subtotalCol.setAttribute("class", "col-md-4 mb-1")
+		datagroupRow.appendChild(subtotalCol)
+		const subtotalFloating = document.createElement("div")
+		subtotalFloating.setAttribute("class", "form-floating")
+		subtotalCol.appendChild(subtotalFloating)
+		const subtotalInput = document.createElement("input")
+		subtotalInput.value = product.getPrice(true)
+		subtotalInput.required = true
+		subtotalInput.type = "text"
+		subtotalInput.setAttribute("class", "form-control")
+		subtotalInput.placeholder = "Subtotal"
+		subtotalInput.readonly = true
+		subtotalFloating.appendChild(subtotalInput)
+	}
+
+	enterCode(event) {
+		if(event.keyCode == 13 && event.currentTarget.value.trim().length) {
+			this.appendItem()
+		}
+   }
 }

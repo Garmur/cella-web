@@ -196,67 +196,13 @@
 																</div>
 																<div class="col-12 col-lg-4 float-end text-lg-end text-center">
 																	<div class="input-group">
-																		<input type="search" class="form-control text-truncate pe-2" placeholder="Buscar por código" aria-label="Buscar por código" aria-describedby="buscador" id="codigoProductoBuscable">
-																		<button type="button" class="btn btn-outline-primary" id="buscarCodigo"><i class="bx bx-search"></i></button>
+																		<input type="search" class="form-control text-truncate pe-2" placeholder="Buscar por código" aria-label="Buscar por código" aria-describedby="buscador" id="codigo-buscable" onkeypress="cella.enterCode(event)">
+																		<button type="button" class="btn btn-outline-primary" onclick="cella.appendItem()"><i class="bx bx-search"></i></button>
 																	</div>
 																</div>
 															</div>
 														</div>
-														<div class="col-12" id="items">
-
-															<div class="row">
-																<div class="col-md-1">
-																	<div class="row align-items-center">
-																		<div class="col-lg-12 col-3 text-lg-center text-end mb-1">
-																			<button type="button" class="btn btn-outline-secondary border-0"><i class="bx bxs-pencil"></i></button>
-																		</div>
-																		<div class="col-lg-12 col-3 text-lg-center text-start mb-1">
-																			<button type="button" class="btn btn-outline-danger border-0"><i class="bx bxs-trash"></i></button>
-																		</div>
-																	</div>
-																</div>
-																<div class="col-md-11">
-																	<div class="row">
-																		<div class="col-md-4 mb-1">
-																			<div class="form-floating">
-																				<input required type="text" class="form-control" id="input-codigo" placeholder="Código único" readonly>
-																				<label for="input-codigo">Código</label>
-																			</div>
-																		</div>
-																		<div class="col-md-8 mb-1">
-																			<div class="form-floating">
-																				<input type="text" class="form-control" id="input-nombre" placeholder="Nombre del producto" readonly>
-																				<label for="input-nombre">Nombre</label>
-																			</div>
-																		</div>
-
-																		<div class="col-md-4 mb-1">
-																			<div class="form-floating">
-																				<input type="text" class="form-control" id="input-cantidad" placeholder="Cantidad">
-																				<label for="input-cantidad">Cantidad</label>
-																			</div>
-																		</div>
-																		<div class="col-md-4 mb-1">
-																			<div class="form-floating">
-																				<input type="number" class="form-control" id="input-valor" placeholder="Valor unitario" readonly>
-																				<label for="input-valor">Valor</label>
-																			</div>
-																		</div>
-																		<div class="col-md-4 mb-1">
-																			<div class="form-floating">
-																				<input readonly type="number" class="form-control" id="input-subtotal" placeholder="Subtotal">
-																				<label for="input-subtotal">Subtotal</label>
-																			</div>
-																		</div>
-																	</div>
-
-																</div>
-															</div>
-
-														</div>
-													</div>
-													<div class="position-relative top-100 start-50 translate-middle mt-0 text-center">
-														<button onclick="addRowForItem()" type="button" class="btn btn-outline-primary text-capitalize border-0 round-100" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Agregar un nuevo ítem"><i class="bx bxs-plus-circle"></i></button>
+														<div class="col-12" id="items"></div>
 													</div>
 													<div class="hstack gap-2">
 														<div class="ms-auto"><span class="text-blood">Descuento:</span></div>
@@ -348,11 +294,13 @@
 		<!-- Vendors JS -->
 		<script data-senna-track="permanent" src="https://cdn.jsdelivr.net/npm/notiflix@3.2.5/dist/notiflix-3.2.5.min.js" integrity="sha256-BLeAd0Ai5RXB4wBuiOI3hgFV0MBzzEyBdL2YG5BwGb4=" crossorigin="anonymous"></script>
 		<script data-senna-track="permanent" src="https://cdn.jsdelivr.net/npm/senna@2.7.9/build/globals/senna-min.js" defer></script>
+		<script data-senna-track="permanent" src="assets/js/sql-wasm.js"></script>
 
 		<!-- Main JS -->
 		<script data-senna-track="permanent" src="assets/js/main.js"></script>
 		<script data-senna-track="permanent" src="assets/js/passcode.js"></script>
 		<script data-senna-track="permanent" src="assets/js/storage.js"></script>
+		<script data-senna-track="permanent" src="assets/js/item.js"></script>
 		<script data-senna-track="permanent" src="assets/js/cella.js"></script>
 
 		<!-- Page JS -->
