@@ -157,15 +157,14 @@
 										<h5 class="card-header"><span class="text-muted fw-light">Almacén /</span> Mover</h5>
 										<div class="card-body">
 
-
-												<div class="container-fluid mb-2">
+												<form class="container-fluid mb-2" id="formulario" onsubmit="cella.saveMovement(this);return false">
 													<div class="row">
 														<div class="col-xl-8 col-lg-8 align-self-start mt-1">
 															<div class="mb-2 row">
 																<label for="numeroDocumento" class="col-sm-3 col-form-label">Identidad personal:</label>
 																<div class="col-sm-8">
 																	<div class="input-group">
-																		<input list="clientes" type="search" class="form-control text-truncate" placeholder="DNI, RUC, etc." aria-label="Número de documento" aria-describedby="buscarDocumentos" id="customer-identification" name="customer-identification" oninput="completeDataCustomer(this)" onkeyup="fractuyo.findCustomer(this)" autocomplete="off">
+																		<input list="clientes" type="search" class="form-control text-truncate" placeholder="DNI, RUC, etc." aria-label="Número de documento" aria-describedby="buscarDocumentos" id="customer-identification" name="customer-identification" oninput="completeDataCustomer(this)" onkeyup="cella.findCustomer(this)" autocomplete="off">
 																		<datalist id="clientes"></datalist>
 																		<button type="button" class="btn btn-outline-primary" id="buscarDocumentos" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Guardar datos de cliente" onclick="fractuyo.addCustomer()"><i class="bx bxs-save"></i></button>
 																	</div>
@@ -196,7 +195,7 @@
 																</div>
 																<div class="col-12 col-lg-4 float-end text-lg-end text-center">
 																	<div class="input-group">
-																		<input type="search" class="form-control text-truncate pe-2" placeholder="Buscar por código" aria-label="Buscar por código" aria-describedby="buscador" id="codigo-buscable" onkeypress="cella.enterCode(event)">
+																		<input type="search" class="form-control text-truncate pe-2" placeholder="Buscar por código" aria-label="Buscar por código" aria-describedby="buscador" id="codigo-buscable" onkeypress="cella.enterCode(event)" autocomplete="off">
 																		<button type="button" class="btn btn-outline-primary" onclick="cella.appendItem()"><i class="bx bx-search"></i></button>
 																	</div>
 																</div>
@@ -209,7 +208,7 @@
 														<div class="p-1 text-end">
 															<div class="input-group">
 																<span class="input-group-text">S/</span>
-																<input type="number" name="descuento-global" class="form-control" value="0.00" placeholder="0.00" step="0.01" aria-label="Descuentos">
+																<input type="number" name="descuento-global" class="form-control" value="0.00" placeholder="0.00" step="0.01" aria-label="Descuentos" onkeyup="Cella.calculateTotal()">
 															</div>
 														</div>
 													</div>
@@ -226,7 +225,7 @@
 													<div class="row">
 														<div class="col-12">
 															<div class="form-floating">
-																<select class="form-select" id="tipo" aria-label="Tipo de movimiento en almacén" name="type-code" required>
+																<select class="form-select" id="tipo" aria-label="Tipo de movimiento en almacén" name="move-type" required>
 																	<option hidden="" value="">Elegir&hellip;</option>
 																	<option value="0">Venta</option>
 																	<option value="1">Compra</option>
@@ -238,8 +237,7 @@
 															<button type="submit" class="btn btn-success text-capitalize fw-bold" name="trigger">Generar</button>
 														</div>
 													</div>
-												</div>
-
+												</form>
 
 										</div>
 									</div>

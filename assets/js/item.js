@@ -81,3 +81,83 @@ class Item {
 		return this.#quantity
 	}
 }
+
+class Move {
+	#identity
+
+	#total = 0
+	#discount = 0
+	#items = Array()
+
+	/** Customer */
+	#dni
+	#customer
+
+	#configuration
+
+	getConfiguration() {
+		return this.#configuration
+	}
+
+	setType(type) {
+		this.#configuration = this.#configuration & ~1 | (type & 1)
+	}
+
+	getType() {
+		return this.#configuration & 1
+	}
+
+	setIdentity(identity) {
+		this.#identity = identity
+	}
+
+	getIdentity(identity) {
+		return this.#identity
+	}
+
+	addItem(item) {
+		this.#items.push(item)
+		this.#total = 0
+	}
+
+	getItems() {
+		return this.#items
+	}
+
+	setDiscount(discount) {
+		this.#discount = discount
+	}
+
+	getDiscount(withFormat = false) {
+		return withFormat ? this.#discount.toFixed(2) : this.#discount
+	}
+
+	getTotal(withFormat = false) {
+		if(this.#total != 0) {
+			return withFormat ? this.#total.toFixed(2) : this.#total
+		}
+
+		for(const item of this.#items) {
+			this.#total += item.getPrice() * item.getQuantity()
+		}
+
+		return withFormat ? this.#total.toFixed(2) : this.#total
+	}
+
+	getPayableAmount(withFormat = false) {
+		return withFormat ? (this.#total - this.discount).toFixed(2) : this.#total - this.#discount
+	}
+
+	setCustomer(dni, name) {
+		this.#dni = dni
+		this.#customer = name
+	}
+
+	getDni() {
+		return this.#dni
+	}
+
+	getCustomer() {
+		return this.#customer
+	}
+}

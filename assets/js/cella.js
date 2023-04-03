@@ -413,7 +413,7 @@ class Cella {
 		itemRow.appendChild(dataCol)
 
 		const datagroupRow = document.createElement("div")
-		datagroupRow.setAttribute("class", "row")
+		datagroupRow.setAttribute("class", "row item")
 		dataCol.appendChild(datagroupRow)
 
 		const skuCol = document.createElement("div")
@@ -430,6 +430,12 @@ class Cella {
 		skuInput.placeholder = "Código único"
 		skuInput.readonly = true
 		skuFloating.appendChild(skuInput)
+
+		const identityInput = document.createElement("input")
+		identityInput.type = "hidden"
+		identityInput.value = product.getIdentity()
+		identityInput.setAttribute("data-type", "identity")
+		skuFloating.appendChild(identityInput)
 
 		const nameCol = document.createElement("div")
 		nameCol.setAttribute("class", "col-md-8 mb-1")
@@ -454,6 +460,7 @@ class Cella {
 		quantityCol.appendChild(quantityFloating)
 		const quantityInput = document.createElement("input")
 		quantityInput.value = "1"
+		quantityInput.setAttribute("data-type", "quantity")
 		quantityInput.required = true
 		quantityInput.type = "text"
 		quantityInput.setAttribute("class", "form-control")
@@ -471,6 +478,7 @@ class Cella {
 		priceInput.value = product.getPrice(true)
 		priceInput.required = true
 		priceInput.type = "text"
+		priceInput.setAttribute("data-type", "unit-value")
 		priceInput.setAttribute("class", "form-control")
 		priceInput.placeholder = "Precio"
 		priceInput.readonly = true
@@ -490,11 +498,133 @@ class Cella {
 		subtotalInput.placeholder = "Subtotal"
 		subtotalInput.readonly = true
 		subtotalFloating.appendChild(subtotalInput)
+
+		subtotalInput.onkeyup = quantityInput.onkeyup = priceInput.onkeyup = function() {
+			Cella.#calculateSubtotal(subtotalInput, quantityInput, priceInput)
+		}
 	}
 
 	enterCode(event) {
 		if(event.keyCode == 13 && event.currentTarget.value.trim().length) {
+			event.stopPropagation()
 			this.appendItem()
+			return false
 		}
+		event.stopPropagation()
    }
+
+   static #calculateSubtotal(entradaSubtotal, entradaCantidad, entradaValorUnitario) {
+		if(entradaCantidad.value.trim().length == 0 || entradaValorUnitario.value.trim().length == 0) {
+			entradaSubtotal.value = ""
+			return
+		}
+
+		entradaSubtotal.value = ( parseFloat(entradaCantidad.value) * parseFloat(entradaValorUnitario.value) ).toFixed(2)
+		Cella.calculateTotal()
+   }
+
+	static calculateTotal() {
+		const form = document.getElementById("formulario")
+		const items = document.getElementsByClassName("item")
+
+		let subtotal = 0, quantity, unitValue
+
+		for(const item of items) {
+			unitValue = parseFloat(item.querySelector("[data-type='unit-value']").value)
+			quantity = parseFloat(item.querySelector("[data-type='quantity']").value)
+
+			subtotal += unitValue * quantity
+		}
+
+		let discount = parseFloat(form.elements["descuento-global"].value.trim())
+		if(isNaN(discount)) {
+			discount = 0
+		}
+		form.elements["total-global"].value = ( subtotal - discount ).toFixed(2)
+	}
+
+	async saveMovement(form) {
+		if(! this.#usable) {
+			this.#showUnreadMessage()
+			await this.useDirectory()
+			return
+		}
+
+		const isIn = parseInt(form.elements["move-type"].value)
+
+		Notiflix.Confirm.show("Creando movimiento", `¿Generar ${isIn ? "compra" : "venta"}?`, "Sí", "No",
+			async () => {
+				form.elements.trigger.disabled = true
+				await this.#createMovement(form)
+				form.elements.trigger.disabled = false
+			}
+		)
+	}
+
+	async #createMovement(form) {
+		if(this.#globalDirHandle == undefined) {
+			Notiflix.Report.warning(
+				"Falta directorio",
+				"Debes elegir una carpeta en tu dispositivo para almacenar todos los datos de este formulario.",
+				"Aceptar"
+			)
+			return
+		}
+
+		let subtotal = 0, quantity, unitValue
+		const movement = new Move()
+		movement.setType(parseInt(form.elements["move-type"].value))
+		movement.setCustomer(form.elements["customer-identification"].value.trim(), form.elements["customer-name"].value.trim())
+		movement.setDiscount(parseFloat(form.elements["descuento-global"].value.trim()))
+
+		const items = form.getElementsByClassName("item")
+		for(const item of items) {
+			const product = new Item()
+			product.setIdentity(parseInt(item.querySelector("[data-type='identity']").value))
+			product.setPrice(parseFloat(item.querySelector("[data-type='unit-value']").value))
+			product.setQuantity(parseFloat(item.querySelector("[data-type='quantity']").value))
+			movement.addItem(product)
+		}
+
+		try {
+			this.#db.run("BEGIN TRANSACTION")
+			this.#db.run("INSERT INTO movimiento VALUES(?,?,?,?,?,?)", [
+				null, movement.getConfiguration(), Date.now() / 1000,
+				movement.getDiscount(),
+				movement.getDni() ? movement.getDni() : '',
+				movement.getCustomer() ? movement.getCustomer() : ''
+			])
+
+			const lastResult = this.#db.exec("SELECT last_insert_rowid()")
+			movement.setIdentity(lastResult[0].values[0][0])
+
+			for(const item of movement.getItems()) {
+				this.#db.run("INSERT INTO producto_movido VALUES(?,?,?,?)", [
+					movement.getIdentity(),
+					item.getIdentity(),
+					item.getQuantity(),
+					item.getPrice()
+				])
+
+				this.#db.run(`UPDATE producto SET reserva = reserva ${movement.getType() ? '+' : '-'} ? WHERE id = ?`, [
+					item.getQuantity(),
+					item.getIdentity()
+				])
+			}
+
+			//Saving db onto disk
+			let fileHandle = await this.#globalDirHandle.getFileHandle("cella.db", { create: true })
+			let writable = await fileHandle.createWritable()
+			this.#db.run("COMMIT")
+			await writable.write(this.#db.export())
+			await writable.close()
+
+			Notiflix.Report.success(movement.getType() ? "Compra" : "Venta", `Se generó el movimiento ${movement.getIdentity()}.`, "Aceptar")
+		}
+		catch(e) {
+			this.#db.run("ROLLBACK")
+			Notiflix.Report.failure("Error para mover", e.message, "Aceptar")
+			console.error(e)
+		}
+	}
 }
