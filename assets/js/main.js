@@ -136,6 +136,7 @@ window.onload = async function() {
 		new senna.Route("/", senna.HtmlScreen),
 		new senna.Route("/index.html", senna.HtmlScreen),
 		new senna.Route("/productos.html", pProductList),
+		new senna.Route("/bloqueo.html", senna.HtmlScreen),
 		new senna.Route("/configuracion.html", senna.HtmlScreen),
 		new senna.Route("/bloqueo.html", senna.HtmlScreen),
 		new senna.Route("/productos-agregar.html", senna.HtmlScreen),

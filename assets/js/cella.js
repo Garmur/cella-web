@@ -10,6 +10,7 @@ class Cella {
 	#publicKey
 	#privateKey
 	#template
+	#logo
 
 	#usable
 
@@ -180,14 +181,49 @@ class Cella {
 					console.log(e)
 				}
 
+				try {
+					fileHandle = await this.#globalDirHandle.getFileHandle("logo.jpg", {})
+					file = await fileHandle.getFile()
+					fileContent = await file.arrayBuffer()
+					this.#logo = fileContent
+				}
+				catch(e) {
+					console.log(e)
+				}
+
 				this.#usable = true
-				Notiflix.Notify.success("Datos cargados.")
+				Notiflix.Notify.success("Datos de almacén cargados.")
+				this.#modifyLocker()
+				app.navigate("/index.html")
 				return
 			}
 			Notiflix.Notify.warning("No hay permisos para acceder a directorio local.")
 		}
 		catch(e) {
-			Notiflix.Notify.error("No hay referencia a directorio.")
+			Notiflix.Notify.failure(e.message)
+			console.log(e)
+		}
+	}
+
+	#modifyLocker() {
+		const unlockerLink = document.getElementById("unlocker")
+		if(unlockerLink) {
+			const parentLink = unlockerLink.parentNode
+			unlockerLink.remove()
+
+			let binary = ''
+			const bytes = new Uint8Array( this.#logo )
+			const len = bytes.byteLength
+			for(let i = 0; i < len; i++) {
+				binary += String.fromCharCode( bytes[ i ] )
+			}
+			//~ return window.btoa( binary )
+
+			const newImage = document.createElement("img")
+			newImage.alt = "logo"
+			newImage.width = "32"
+			newImage.src = `data:image/jpg;base64,${window.btoa( binary )}`
+			parentLink.appendChild(newImage)
 		}
 	}
 

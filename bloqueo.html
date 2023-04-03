@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"/>
-		<title>Todos los productos - Cella</title>
+		<title>Bloqueo temporal - Cella</title>
 		<meta name="description" content="" />
 
 		<!-- Favicon -->
@@ -85,7 +85,7 @@
 									<div data-i18n="Basic">Agregar</div>
 								</a>
 							</li>
-							<li class="menu-item active">
+							<li class="menu-item">
 								<a href="productos.html" class="menu-link">
 									<i class="menu-icon tf-icons bx bx-crown"></i>
 									<div data-i18n="Boxicons">Todos</div>
@@ -151,30 +151,41 @@
 						<!-- Content -->
 
 						<div class="container-xxl flex-grow-1 container-p-y" id="lienzo">
-							<div class="row">
-								<div class="col-12">
-									<!-- Hoverable Table rows -->
+							<div class="row justify-content-center">
+								<div class="col-12 col-sm-10 col-md-7 col-lg-4 col-xl-3">
+
+							<div class="authentication-wrapper authentication-basic container-p-y">
+								<div class="authentication-inner py-4">
+									<!-- Forgot Password -->
 									<div class="card">
-										<h5 class="card-header"><span class="text-muted fw-light">Almacén /</span> Productos</h5>
-										<div class="table-responsive text-nowrap" id="lista">
-											<table class="table table-hover">
-												<thead>
-													<tr>
-														<th>Código</th>
-														<th>Nombre</th>
-														<th>Estado</th>
-														<th>Stock</th>
-														<th>Precio</th>
-														<th>Acción</th>
-													</tr>
-												</thead>
-												<tbody class="table-border-bottom-0" id="lista-productos"></tbody>
-											</table>
+										<div class="card-body">
+											<!-- Logo -->
+											<div class="app-brand justify-content-center">
+												<a href="index.html" class="app-brand-link gap-2">
+													<span class="app-brand-logo demo">
+														<img width="32" src="assets/img/logo.svg">
+													</span>
+													<span class="app-brand-text demo text-body fw-bolder">cella</span>
+												</a>
+											</div>
+											<!-- /Logo -->
+											<h5 class="mb-2 text-center">Datos bloqueados 🔒</h5>
+											<form class="mb-3" onsubmit="cella.useDirectory();return false">
+												<div class="mb-3">
+													<label for="clave" class="form-label">Clave para desbloquear:</label>
+													<input type="password" class="form-control" id="clave" name="clave" placeholder="Clave" autofocus>
+												</div>
+												<button type="submit" class="btn btn-primary d-grid w-100">Desbloquear</button>
+											</form>
 										</div>
 									</div>
-									<!--/ Hoverable Table rows -->
+									<!-- /Forgot Password -->
 								</div>
 							</div>
+
+								</div>
+							</div>
+
 						</div>
 						<!-- / Content -->
 
