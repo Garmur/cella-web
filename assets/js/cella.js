@@ -538,6 +538,8 @@ class Cella {
 		subtotalInput.onkeyup = quantityInput.onkeyup = priceInput.onkeyup = function() {
 			Cella.#calculateSubtotal(subtotalInput, quantityInput, priceInput)
 		}
+
+		Cella.calculateTotal()
 	}
 
 	enterCode(event) {
