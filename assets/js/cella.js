@@ -217,7 +217,6 @@ class Cella {
 			for(let i = 0; i < len; i++) {
 				binary += String.fromCharCode( bytes[ i ] )
 			}
-			//~ return window.btoa( binary )
 
 			const newImage = document.createElement("img")
 			newImage.alt = "logo"
@@ -663,6 +662,88 @@ class Cella {
 			this.#db.run("ROLLBACK")
 			Notiflix.Report.failure("Error para mover", e.message, "Aceptar")
 			console.error(e)
+		}
+	}
+
+	listMovements(lastIndex) {
+		const list = document.getElementById("lista-movimientos")
+		if(list == null) {
+			Notiflix.Notify.warning("No hay lugar para listar movimientos.")
+			return
+		}
+
+		if(lastIndex == 0) {
+			const stmt = this.#db.prepare("SELECT seq FROM sqlite_sequence WHERE name = 'movimiento'");
+			if(stmt.step()) {
+				const row = stmt.get()
+				lastIndex = row[0]
+				++lastIndex
+			}
+			stmt.free()
+		}
+
+		this.#db.each("SELECT * FROM movimiento WHERE id < $lastindex ORDER BY id DESC LIMIT 8", {$lastindex: lastIndex},
+			function(row) {
+				const tr = list.insertRow()
+				tr.insertCell().appendChild(document.createTextNode(row.id))
+				tr.insertCell().appendChild(document.createTextNode(row.config & 1 ? "Compra" : "Venta"))
+				tr.insertCell().appendChild(document.createTextNode(row.fecha))
+				tr.insertCell().appendChild(document.createTextNode(row.consumidor))
+				const viewerButton = document.createElement("i")
+				viewerButton.setAttribute("class", "bx bx-link me-1")
+				const viewer = document.createElement("a")
+				viewer.href = `/movimientos-ver.html?movimiento=${row.id}`
+				viewer.setAttribute("class", "btn btn-secondary p-1")
+				viewer.appendChild(viewerButton)
+				viewer.appendChild(document.createTextNode("Ver más"))
+				tr.insertCell().appendChild(viewer)
+			}
+		)
+	}
+
+	viewMovement(identity) {
+		const movement = new Move()
+		this.#db.each("SELECT * FROM movimiento WHERE id = $identity LIMIT 1", {$identity: identity},
+			function(row) {
+				movement.setIdentity(row.id)
+				movement.setDiscount(row.descuento)
+				movement.setCustomer(row.dni, row.consumidor)
+			}
+		)
+
+		this.#db.each("SELECT _producto, producto_movido.precio, cantidad, sku, nombre FROM producto_movido INNER JOIN producto ON id = _producto WHERE _movimiento = $identity", {$identity: identity},
+			function(row) {
+				const product = new Item()
+				product.setIdentity(row._producto)
+				product.setQuantity(row.cantidad)
+				product.setPrice(row.precio)
+				product.setName(row.nombre)
+				movement.addItem(product)
+			}
+		)
+
+		let binary = ''
+		const bytes = new Uint8Array( this.#logo )
+		const len = bytes.byteLength
+		for(let i = 0; i < len; i++) {
+			binary += String.fromCharCode( bytes[ i ] )
+		}
+		document.getElementById("custom-logo").src = `data:image/jpg;base64,${window.btoa( binary )}`
+
+		document.getElementById("identidad").textContent = movement.getIdentity()
+		document.getElementById("identidad-header").textContent = movement.getIdentity()
+		document.getElementById("descuento").textContent = movement.getDiscount()
+		document.getElementById("total").textContent = movement.getTotal(true)
+		document.getElementById("tipo").textContent = movement.getType() ? "Compra" : "Venta"
+		document.getElementById("nombre").textContent = movement.getCustomer()
+		document.getElementById("dni").textContent = movement.getDni()
+
+		const list = document.getElementById("productos")
+		for(const item of movement.getItems()) {
+			const tr = list.insertRow()
+			tr.insertCell().appendChild(document.createTextNode(item.getQuantity()))
+			tr.insertCell().appendChild(document.createTextNode(item.getName()))
+			tr.insertCell().appendChild(document.createTextNode(item.getPrice(true)))
 		}
 	}
 }

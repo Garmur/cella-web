@@ -104,6 +104,16 @@ window.onload = async function() {
 
 	cella = new Cella()
 
+	let pMovementList = function(){}
+	pMovementList.prototype = new senna.HtmlScreen()
+	pMovementList.prototype.activate = function() {
+		if(cella.isUsable()) {
+			cella.listMovements(0)
+			return
+		}
+		Notiflix.Notify.warning("Falta acceso a los archivos.")
+	}
+
 	let pProductList = function(){}
 	pProductList.prototype = new senna.HtmlScreen()
 	pProductList.prototype.activate = function() {
@@ -130,6 +140,22 @@ window.onload = async function() {
 		Notiflix.Notify.warning("Falta acceso a los archivos.")
 	}
 
+	let pMovementView = function(){}
+	pMovementView.prototype = new senna.HtmlScreen()
+	pMovementView.prototype.activate = function() {
+		if(cella.isUsable()) {
+			const movementId = parseInt(new URLSearchParams(document.location.search).get("movimiento"))
+			if(movementId >= 0) {
+				cella.viewMovement(movementId)
+			}
+			else {
+				Notiflix.Report.warning("Identidad inconsiste", "El índice interno del producto debe igual o mayor que cero.", "Aceptar")
+			}
+			return
+		}
+		Notiflix.Notify.warning("Falta acceso a los archivos.")
+	}
+
 	app = new senna.App()
 	app.addSurfaces(["navegador", "lienzo"])
 	app.addRoutes([
@@ -138,9 +164,11 @@ window.onload = async function() {
 		new senna.Route("/productos.html", pProductList),
 		new senna.Route("/bloqueo.html", senna.HtmlScreen),
 		new senna.Route("/configuracion.html", senna.HtmlScreen),
+		new senna.Route("/movimientos.html", pMovementList),
 		new senna.Route("/bloqueo.html", senna.HtmlScreen),
 		new senna.Route("/productos-agregar.html", senna.HtmlScreen),
-		new senna.Route(/productos-editar\.html\??(?:&?[^=&]*=[^=&]*)*/, pProductView)
+		new senna.Route(/productos-editar\.html\??(?:&?[^=&]*=[^=&]*)*/, pProductView),
+		new senna.Route(/movimientos-ver\.html\??(?:&?[^=&]*=[^=&]*)*/, pMovementView)
 	])
 
 	await cella.init()
