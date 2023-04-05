@@ -128,10 +128,10 @@
 						<div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
 							<!-- Search -->
 							<div class="navbar-nav align-items-center">
-									<form class="nav-item d-flex align-items-center">
+								<form class="nav-item d-flex align-items-center" onsubmit="cella.searchMovement(this);return false">
 									<button type="submit" class="btn fs-4 lh-0 p-0"><i class="bx bx-search"></i></button>
-									<input type="text" class="form-control border-0 shadow-none" placeholder="Buscar movimiento&hellip;" aria-label="Buscar movimiento">
-									</form>
+									<input type="text" name="identity" class="form-control border-0 shadow-none" placeholder="Buscar movimiento&hellip;" aria-label="Buscar movimiento">
+								</form>
 							</div>
 							<!-- /Search -->
 

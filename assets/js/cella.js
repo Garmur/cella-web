@@ -749,4 +749,34 @@ class Cella {
 			tr.insertCell().appendChild(document.createTextNode(item.getPrice(true)))
 		}
 	}
+
+	/**
+	 * Search if index exists and go on.
+	 */
+	searchMovement(form) {
+		const identity = parseInt(form.elements.identity.value.trim())
+		if(isNaN(identity) || identity < 1) {
+			Notiflix.Notify.warning("Se debe escribir un número natural.")
+			return
+		}
+
+		let notFound = true
+		const stmt = this.#db.prepare("SELECT EXISTS(SELECT 1 FROM movimiento WHERE id = $identity)")
+		stmt.bind({$identity: identity})
+		if(stmt.step()) {
+			const row = stmt.get()
+			if(row[0] == '1') {
+				notFound = false
+			}
+		}
+		stmt.free()
+
+		if(notFound) {
+			Notiflix.Notify.info("No existe el movimiento.")
+			return
+		}
+		form.reset()
+
+		app.navigate(`/movimientos-ver.html?movimiento=${identity}`)
+	}
 }
