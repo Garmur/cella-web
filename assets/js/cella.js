@@ -736,8 +736,9 @@ class Cella {
 
 		document.getElementById("identidad").textContent = movement.getIdentity()
 		document.getElementById("identidad-header").textContent = movement.getIdentity()
-		document.getElementById("descuento").textContent = movement.getDiscount()
-		document.getElementById("total").textContent = movement.getTotal(true)
+		document.getElementById("descuento").textContent = movement.getDiscount(true)
+		document.getElementById("subtotal").textContent = movement.getTotal(true)
+		document.getElementById("total").textContent = movement.getPayableAmount(true)
 		document.getElementById("tipo").textContent = movement.getType() ? "Compra" : "Venta"
 		document.getElementById("nombre").textContent = movement.getCustomer()
 		document.getElementById("dni").textContent = movement.getDni()

@@ -155,7 +155,7 @@ class Move {
 	}
 
 	getPayableAmount(withFormat = false) {
-		return withFormat ? (this.#total - this.discount).toFixed(2) : this.#total - this.#discount
+		return withFormat ? (this.#total - this.#discount).toFixed(2) : this.#total - this.#discount
 	}
 
 	setCustomer(dni, name) {
