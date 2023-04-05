@@ -88,6 +88,7 @@ class Move {
 	#total = 0
 	#discount = 0
 	#items = Array()
+	#timestamp
 
 	/** Customer */
 	#dni
@@ -168,5 +169,23 @@ class Move {
 
 	getCustomer() {
 		return this.#customer
+	}
+
+	setTimestamp(timestamp) {
+		this.#timestamp = timestamp
+	}
+
+	getTimestamp() {
+		return this.#timestamp
+	}
+
+	static getDate(timestamp) {
+		const date = new Date(timestamp * 1000)
+		return ("0" + date.getDate()).slice(-2) + "/" + ("0" + (date.getMonth()+1)).slice(-2) + "/" + date.getFullYear()
+	}
+
+	static getTime(timestamp) {
+		const date = new Date(timestamp * 1000)
+		return ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" + ("0" + date.getSeconds()).slice(-2)
 	}
 }

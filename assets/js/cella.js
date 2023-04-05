@@ -709,6 +709,7 @@ class Cella {
 		this.#db.each("SELECT * FROM movimiento WHERE id = $identity LIMIT 1", {$identity: identity},
 			function(row) {
 				movement.setIdentity(row.id)
+				movement.setTimestamp(row.fecha)
 				movement.setDiscount(row.descuento)
 				movement.setCustomer(row.dni, row.consumidor)
 			}
@@ -740,6 +741,8 @@ class Cella {
 		document.getElementById("tipo").textContent = movement.getType() ? "Compra" : "Venta"
 		document.getElementById("nombre").textContent = movement.getCustomer()
 		document.getElementById("dni").textContent = movement.getDni()
+		document.getElementById("fecha").textContent = Move.getDate( movement.getTimestamp() )
+		document.getElementById("hora").textContent = Move.getTime( movement.getTimestamp() )
 
 		const list = document.getElementById("productos")
 		for(const item of movement.getItems()) {
