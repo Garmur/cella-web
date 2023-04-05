@@ -712,6 +712,7 @@ class Cella {
 				movement.setTimestamp(row.fecha)
 				movement.setDiscount(row.descuento)
 				movement.setCustomer(row.dni, row.consumidor)
+				movement.setNote(row.nota)
 			}
 		)
 
@@ -742,6 +743,7 @@ class Cella {
 		document.getElementById("tipo").textContent = movement.getType() ? "Compra" : "Venta"
 		document.getElementById("nombre").textContent = movement.getCustomer()
 		document.getElementById("dni").textContent = movement.getDni()
+		document.getElementById("nota").textContent = movement.getNote()
 		document.getElementById("fecha").textContent = Move.getDate( movement.getTimestamp() )
 		document.getElementById("hora").textContent = Move.getTime( movement.getTimestamp() )
 
