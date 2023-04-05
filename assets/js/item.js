@@ -92,6 +92,7 @@ class Move {
 	/** Customer */
 	#dni
 	#customer
+	#note
 
 	#configuration
 
@@ -113,6 +114,14 @@ class Move {
 
 	getIdentity(identity) {
 		return this.#identity
+	}
+
+	setNote(note) {
+		this.#note = note
+	}
+
+	getNote() {
+		return this.#note
 	}
 
 	addItem(item) {

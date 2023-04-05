@@ -64,8 +64,9 @@ class Cella {
 					config integer,\
 					fecha integer,\
 					descuento blob,\
-					dni varchar(11),\
-					consumidor varchar(32)\
+					dni varchar(12),\
+					consumidor varchar(32),\
+					nota varchar(128)\
 				);\
 				CREATE TABLE producto_movido(\
 					_movimiento integer,\
@@ -613,6 +614,7 @@ class Cella {
 		movement.setType(parseInt(form.elements["move-type"].value))
 		movement.setCustomer(form.elements["customer-identification"].value.trim(), form.elements["customer-name"].value.trim())
 		movement.setDiscount(parseFloat(form.elements["descuento-global"].value.trim()))
+		movement.setNote(form.elements.mensaje.value.trim())
 
 		const items = form.getElementsByClassName("item")
 		for(const item of items) {
@@ -625,11 +627,12 @@ class Cella {
 
 		try {
 			this.#db.run("BEGIN TRANSACTION")
-			this.#db.run("INSERT INTO movimiento VALUES(?,?,?,?,?,?)", [
+			this.#db.run("INSERT INTO movimiento VALUES(?,?,?,?,?,?,?)", [
 				null, movement.getConfiguration(), Date.now() / 1000,
 				movement.getDiscount(),
 				movement.getDni() ? movement.getDni() : '',
-				movement.getCustomer() ? movement.getCustomer() : ''
+				movement.getCustomer() ? movement.getCustomer() : '',
+				movement.getNote() ? movement.getNote() : ''
 			])
 
 			const lastResult = this.#db.exec("SELECT last_insert_rowid()")

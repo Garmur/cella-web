@@ -164,7 +164,7 @@
 																<label for="numeroDocumento" class="col-sm-3 col-form-label">Identidad personal:</label>
 																<div class="col-sm-8">
 																	<div class="input-group">
-																		<input list="clientes" type="search" class="form-control text-truncate" placeholder="DNI, RUC, etc." aria-label="Número de documento" aria-describedby="buscarDocumentos" id="customer-identification" name="customer-identification" oninput="completeDataCustomer(this)" onkeyup="cella.findCustomer(this)" autocomplete="off">
+																		<input list="clientes" type="search" maxlength="12" class="form-control text-truncate" placeholder="DNI, RUC, etc." aria-label="Número de documento" aria-describedby="buscarDocumentos" id="customer-identification" name="customer-identification" oninput="completeDataCustomer(this)" onkeyup="cella.findCustomer(this)" autocomplete="off">
 																		<datalist id="clientes"></datalist>
 																		<button type="button" class="btn btn-outline-primary" id="buscarDocumentos" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Guardar datos de cliente" onclick="fractuyo.addCustomer()"><i class="bx bxs-save"></i></button>
 																	</div>
@@ -173,7 +173,7 @@
 															<div class="mb-2 row">
 																<label for="customer-name" class="col-sm-3 col-form-label">Nombre personal:</label>
 																<div class="col-sm-8">
-																	<input type="text" class="form-control" aria-label="Razón Social del cliente" aria-describedby="razonadorSocial" id="customer-name" name="customer-name" placeholder="Nombre o razón social" autocomplete="off">
+																	<input type="text" class="form-control" maxlength="32" aria-label="Razón Social del cliente" aria-describedby="razonadorSocial" id="customer-name" name="customer-name" placeholder="Nombre o razón social" autocomplete="off">
 																</div>
 															</div>
 														</div>
@@ -181,7 +181,7 @@
 															<div class="row">
 																<div class="col-lg-12 col-sm-12 col-12 mb-2">
 																	<label class="form-label" for="basic-default-message">Nota:</label>
-																	<textarea id="basic-default-message" name="mensaje" class="form-control" placeholder="Cualquier apunte opcional hasta 128 caracteres."></textarea>
+																	<textarea id="basic-default-message" maxlength="128" name="mensaje" class="form-control" placeholder="Cualquier apunte opcional hasta 128 caracteres."></textarea>
 																</div>
 															</div><!-- .row -->
 														</div>
