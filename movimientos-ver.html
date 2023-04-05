@@ -118,7 +118,7 @@
 				<div class="layout-page">
 					<!-- Navbar -->
 
-					<nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
+					<nav class="d-print-none layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme" id="layout-navbar">
 						<div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
 							<a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
 								<i class="bx bx-menu bx-sm"></i>
@@ -156,9 +156,9 @@
 								<!-- Basic Layout -->
 								<div class="col-xxl">
 									<div class="card mb-4">
-										<div class="card-header d-flex align-items-center justify-content-between">
+										<div class="card-header d-flex align-items-center justify-content-between d-print-none">
 											<h5 class="mb-0"><span class="text-muted fw-light">Almacén / Movimientos /</span> <span id="identidad-header"></span></h5>
-											<small class="text-muted float-end">Imprimir</small>
+											<button onclick="window.print()" class="btn btn-success border-0" title="Imprimir"><i class="bx bx-printer"></i></button>
 										</div>
 										<div class="card-body">
 											<div class="container-fluid">
@@ -205,7 +205,7 @@
 						<!-- / Content -->
 
 						<!-- Footer -->
-						<footer class="content-footer footer bg-footer-theme">
+						<footer class="d-print-none content-footer footer bg-footer-theme">
 							<div class="container-xxl d-flex flex-wrap justify-content-between py-2 flex-md-row flex-column">
 								<div class="mb-2 mb-md-0">
 									&copy;
