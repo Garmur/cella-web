@@ -410,8 +410,25 @@ class Cella {
 			Notiflix.Notify.warning("Entrada para código está vacía.")
 			return
 		}
-		const product = new Item()
 
+		const rows = document.getElementsByClassName("item")
+		if(rows != undefined) {
+			for(const row of rows) {
+				if(row.querySelector("[data-type='sku']").value.trim() == sku) {
+					const quantitySelector = row.querySelector("[data-type='quantity']")
+					quantitySelector.value = parseInt(quantitySelector.value) + 1
+					Cella.#calculateSubtotal(
+						row.querySelector("[data-type='subtotal']"),
+						quantitySelector,
+						row.querySelector("[data-type='unit-value']")
+					)
+					Cella.calculateTotal()
+					return
+				}
+			}
+		}
+
+		const product = new Item()
 		this.#db.each("SELECT id, config, sku, nombre, descripcion, precio FROM producto WHERE sku = $sku LIMIT 1", {$sku: sku},
 			function(row) {
 				product.setIdentity(row.id)
@@ -465,6 +482,7 @@ class Cella {
 		skuInput.setAttribute("class", "form-control")
 		skuInput.placeholder = "Código único"
 		skuInput.readOnly = true
+		skuInput.setAttribute("data-type", "sku")
 		skuFloating.appendChild(skuInput)
 		const skuLabel = document.createElement("label")
 		skuLabel.appendChild(document.createTextNode("Código único"))
@@ -540,6 +558,7 @@ class Cella {
 		subtotalInput.value = product.getPrice(true)
 		subtotalInput.required = true
 		subtotalInput.type = "text"
+		subtotalInput.setAttribute("data-type", "subtotal")
 		subtotalInput.setAttribute("class", "form-control")
 		subtotalInput.placeholder = "Subtotal"
 		subtotalInput.readOnly = true
