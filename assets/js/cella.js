@@ -595,13 +595,23 @@ class Cella {
 	}
 
 	async saveMovement(form) {
+		const isIn = parseInt(form.elements["move-type"].value)
+
+		const items = document.getElementsByClassName("item")
+		if(items == undefined || items.length == 0) {
+			Notiflix.Report.warning(
+				"No hay ítems",
+				`No se puede procesar ${isIn ? "compra" : "venta"} sin elementos.`,
+				"Aceptar"
+			)
+			return
+		}
+
 		if(! this.#usable) {
 			this.#showUnreadMessage()
 			await this.useDirectory()
 			return
 		}
-
-		const isIn = parseInt(form.elements["move-type"].value)
 
 		Notiflix.Confirm.show("Creando movimiento", `¿Generar ${isIn ? "compra" : "venta"}?`, "Sí", "No",
 			async () => {
@@ -651,6 +661,7 @@ class Cella {
 			const lastResult = this.#db.exec("SELECT last_insert_rowid()")
 			movement.setIdentity(lastResult[0].values[0][0])
 
+			let withoutItem = true
 			for(const item of movement.getItems()) {
 				this.#db.run("INSERT INTO producto_movido VALUES(?,?,?,?)", [
 					movement.getIdentity(),
@@ -663,6 +674,14 @@ class Cella {
 					item.getQuantity(),
 					item.getIdentity()
 				])
+				if(withoutItem) {
+					withoutItem = false
+				}
+			}
+			if(withoutItem) {
+				this.#db.run("ROLLBACK")
+				Notiflix.Report.warning("Proceso no culminado", "No hay ítems para insertar con el movimiento.", "Aceptar")
+				return
 			}
 
 			//Saving db onto disk
