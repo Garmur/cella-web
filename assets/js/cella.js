@@ -464,8 +464,11 @@ class Cella {
 		skuInput.type = "text"
 		skuInput.setAttribute("class", "form-control")
 		skuInput.placeholder = "Código único"
-		skuInput.readonly = true
+		skuInput.readOnly = true
 		skuFloating.appendChild(skuInput)
+		const skuLabel = document.createElement("label")
+		skuLabel.appendChild(document.createTextNode("Código único"))
+		skuFloating.appendChild(skuLabel)
 
 		const identityInput = document.createElement("input")
 		identityInput.type = "hidden"
@@ -485,8 +488,11 @@ class Cella {
 		nameInput.setAttribute("class", "form-control")
 		nameInput.placeholder = "Nombre"
 		nameInput.value = product.getName()
-		nameInput.readonly = true
+		nameInput.readOnly = true
 		nameFloating.appendChild(nameInput)
+		const nameLabel = document.createElement("label")
+		nameLabel.appendChild(document.createTextNode("Nombre de producto"))
+		nameFloating.appendChild(nameLabel)
 
 		const quantityCol = document.createElement("div")
 		quantityCol.setAttribute("class", "col-md-4 mb-1")
@@ -501,8 +507,10 @@ class Cella {
 		quantityInput.type = "text"
 		quantityInput.setAttribute("class", "form-control")
 		quantityInput.placeholder = "Cantidad"
-		quantityInput.readonly = true
 		quantityFloating.appendChild(quantityInput)
+		const quantityLabel = document.createElement("label")
+		quantityLabel.appendChild(document.createTextNode("Cantidad"))
+		quantityFloating.appendChild(quantityLabel)
 
 		const priceCol = document.createElement("div")
 		priceCol.setAttribute("class", "col-md-4 mb-1")
@@ -517,8 +525,10 @@ class Cella {
 		priceInput.setAttribute("data-type", "unit-value")
 		priceInput.setAttribute("class", "form-control")
 		priceInput.placeholder = "Precio"
-		priceInput.readonly = true
 		priceFloating.appendChild(priceInput)
+		const priceLabel = document.createElement("label")
+		priceLabel.appendChild(document.createTextNode("Valor unitario"))
+		priceFloating.appendChild(priceLabel)
 
 		const subtotalCol = document.createElement("div")
 		subtotalCol.setAttribute("class", "col-md-4 mb-1")
@@ -532,8 +542,11 @@ class Cella {
 		subtotalInput.type = "text"
 		subtotalInput.setAttribute("class", "form-control")
 		subtotalInput.placeholder = "Subtotal"
-		subtotalInput.readonly = true
+		subtotalInput.readOnly = true
 		subtotalFloating.appendChild(subtotalInput)
+		const subtotalLabel = document.createElement("label")
+		subtotalLabel.appendChild(document.createTextNode("Subtotal"))
+		subtotalFloating.appendChild(subtotalLabel)
 
 		subtotalInput.onkeyup = quantityInput.onkeyup = priceInput.onkeyup = function() {
 			Cella.#calculateSubtotal(subtotalInput, quantityInput, priceInput)
