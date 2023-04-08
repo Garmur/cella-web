@@ -659,12 +659,19 @@ class Cella {
 		movement.setNote(form.elements.mensaje.value.trim())
 
 		const items = form.getElementsByClassName("item")
-		for(const item of items) {
-			const product = new Item()
-			product.setIdentity(parseInt(item.querySelector("[data-type='identity']").value))
-			product.setPrice(parseFloat(item.querySelector("[data-type='unit-value']").value))
-			product.setQuantity(parseFloat(item.querySelector("[data-type='quantity']").value))
-			movement.addItem(product)
+		try {
+			for(const item of items) {
+				const product = new Item()
+				product.setSku(item.querySelector("[data-type='sku']").value)
+				product.setIdentity(parseInt(item.querySelector("[data-type='identity']").value))
+				product.setPrice(parseFloat(item.querySelector("[data-type='unit-value']").value))
+				product.setQuantity(parseFloat(item.querySelector("[data-type='quantity']").value))
+				movement.addItem(product)
+			}
+		}
+		catch(e) {
+			Notiflix.Report.warning("Error para mover", e.message, "Aceptar")
+			console.error(e)
 		}
 
 		try {

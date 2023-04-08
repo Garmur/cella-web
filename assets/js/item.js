@@ -20,11 +20,11 @@ class Item {
 
 	setPrice(price) {
 		if(isNaN(price)) {
-			throw new Error("Precio de producto debe ser numérico.")
+			throw new Error(`Precio de ${this.#sku} debe ser numérico.`)
 		}
 
 		if(price <= 0) {
-			throw new Error("Precio de producto es cero o menor que cero.")
+			throw new Error(`Precio de ${this.#sku} es cero o menor que cero.`)
 		}
 
 		this.#price = price
@@ -71,7 +71,7 @@ class Item {
 	 */
 	setQuantity(quantity) {
 		if(isNaN(quantity)) {
-			throw new Error("La cantidad debe ser numérica.")
+			throw new Error(`La cantidad para ${this.#sku} debe ser numérica.`)
 		}
 
 		this.#quantity = quantity
