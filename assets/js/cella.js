@@ -461,6 +461,7 @@ class Cella {
 		eraser.type = "button"
 		eraser.setAttribute("class", "btn btn-outline-danger border-0")
 		eraser.appendChild(eraserIcon)
+		eraser.onclick = this.#autoRemoveItem
 		eraserCol.appendChild(eraser)
 
 		const dataCol = document.createElement("div")
@@ -569,6 +570,11 @@ class Cella {
 		subtotalLabel.appendChild(document.createTextNode("Subtotal"))
 		subtotalFloating.appendChild(subtotalLabel)
 
+		const replaceable = items.getElementsByClassName("replaceable")[0]
+		if(replaceable) {
+			replaceable.remove()
+		}
+
 		subtotalInput.onkeyup = quantityInput.onkeyup = priceInput.onkeyup = function() {
 			Cella.#calculateSubtotal(subtotalInput, quantityInput, priceInput)
 		}
@@ -576,13 +582,29 @@ class Cella {
 		Cella.calculateTotal()
 	}
 
+	#autoRemoveItem() {
+		const item = this.parentNode.parentNode
+		Notiflix.Confirm.show("Eliminando ítem", "¿Desea eliminar el ítem?", "Sí", "No",
+			() => {
+				const items = item.parentNode
+				item.remove()
+				Cella.calculateTotal()
+				if(items.childElementCount == 0) {
+					const ayuda = document.createElement("i")
+					ayuda.appendChild(document.createTextNode("Acá aparecerán ítems agregados."))
+					const replaceable = document.createElement("div")
+					replaceable.setAttribute("class", "p-4 text-center replaceable")
+					replaceable.appendChild(ayuda)
+					items.appendChild(replaceable)
+				}
+			}
+		)
+	}
+
 	enterCode(event) {
 		if(event.keyCode == 13 && event.currentTarget.value.trim().length) {
-			//~ event.stopPropagation()
 			this.appendItem()
-			//~ return false
 		}
-		//~ event.stopPropagation()
    }
 
    static #calculateSubtotal(entradaSubtotal, entradaCantidad, entradaValorUnitario) {
