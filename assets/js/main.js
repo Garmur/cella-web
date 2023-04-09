@@ -186,3 +186,9 @@ window.onload = async function() {
 	// Auto update menu collapsed/expanded based on the themeConfig
 	window.Helpers.setCollapsed(true, false)
 }
+
+function avoidSubmitting(e) {
+	if((e.charCode || e.keyCode || 0) == 13) {
+		e.preventDefault()
+	}
+}

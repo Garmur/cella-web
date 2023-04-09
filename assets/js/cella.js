@@ -405,11 +405,13 @@ class Cella {
 			return
 		}
 
-		const sku = document.getElementById("codigo-buscable").value.trim()
+		const skuSource = document.getElementById("codigo-buscable")
+		const sku = skuSource.value.trim()
 		if(sku.length == 0) {
 			Notiflix.Notify.warning("Entrada para código está vacía.")
 			return
 		}
+		skuSource.value = ""
 
 		const rows = document.getElementsByClassName("item")
 		if(rows != undefined) {
@@ -440,7 +442,7 @@ class Cella {
 		)
 
 		if(! product.getIdentity()) {
-			Notiflix.Notify.failure("No existe el código en el almacén.")
+			Notiflix.Notify.failure(`No existe código ${sku} en almacén.`)
 			return
 		}
 
@@ -576,11 +578,11 @@ class Cella {
 
 	enterCode(event) {
 		if(event.keyCode == 13 && event.currentTarget.value.trim().length) {
-			event.stopPropagation()
+			//~ event.stopPropagation()
 			this.appendItem()
-			return false
+			//~ return false
 		}
-		event.stopPropagation()
+		//~ event.stopPropagation()
    }
 
    static #calculateSubtotal(entradaSubtotal, entradaCantidad, entradaValorUnitario) {
