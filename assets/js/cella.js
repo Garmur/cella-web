@@ -816,6 +816,7 @@ class Cella {
 			binary += String.fromCharCode( bytes[ i ] )
 		}
 		document.getElementById("custom-logo").src = `data:image/jpg;base64,${window.btoa( binary )}`
+		document.getElementById("ruc").textContent = this.#businessId
 
 		document.getElementById("identidad").textContent = movement.getIdentity()
 		document.getElementById("identidad-header").textContent = movement.getIdentity()
