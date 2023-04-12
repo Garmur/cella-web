@@ -1,0 +1,43 @@
+{
+	"icons": [
+		{
+			"src": "/assets/img/logo.png",
+			"type": "image/png",
+			"sizes": "64x64"
+		},
+		{
+			"src": "/assets/img/logo-144.png",
+			"type": "image/png",
+			"sizes": "144x144"
+		},
+		{
+			"src": "/assets/img/logo-192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "/assets/img/logo-384.png",
+			"type": "image/png",
+			"sizes": "384x384"
+		},
+		{
+			"src": "/assets/img/logo-512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		},
+		{
+			"src": "/assets/img/logo.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any"
+		}
+	],
+	"short_name": "Cella",
+	"description": "Gestor simple de inventario.",
+	"start_url": "/?utm_source=pwa",
+	"background_color": "#f4d684",
+	"display": "standalone",
+	"scope": "/",
+	"theme_color": "#696cff",
+	"name": "Inventario Cella"
+}
