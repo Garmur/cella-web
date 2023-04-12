@@ -772,7 +772,7 @@ class Cella {
 				const tr = list.insertRow()
 				tr.insertCell().appendChild(document.createTextNode(row.id))
 				tr.insertCell().appendChild(document.createTextNode(row.config & 1 ? "Compra" : "Venta"))
-				tr.insertCell().appendChild(document.createTextNode(row.fecha))
+				tr.insertCell().appendChild(document.createTextNode(Move.getDate( row.fecha )))
 				tr.insertCell().appendChild(document.createTextNode(row.consumidor))
 				const viewerButton = document.createElement("i")
 				viewerButton.setAttribute("class", "bx bx-link me-1")
