@@ -168,8 +168,25 @@ window.onload = async function() {
 		new senna.Route("/bloqueo.html", senna.HtmlScreen),
 		new senna.Route("/productos-agregar.html", senna.HtmlScreen),
 		new senna.Route(/productos-editar\.html\??(?:&?[^=&]*=[^=&]*)*/, pProductView),
-		new senna.Route(/movimientos-ver\.html\??(?:&?[^=&]*=[^=&]*)*/, pMovementView)
+		new senna.Route(/movimientos-ver\.html\??(?:&?[^=&]*=[^=&]*)*/, pMovementView),
+		new senna.Route("/inventario.html", senna.HtmlScreen)
 	])
+	app.on("endNavigate", function(event) {
+		if(event.error) {
+			if(event.error.invalidStatus) {
+				Notiflix.Report.info("Página no disponible","No se puede mostrar la página solicitada.<br>Tal vez no esté disponible por ahora.<br>Prueba navegando a otras secciones.", "Aceptar", function(){document.documentElement.classList.remove( app.getLoadingCssClass() )})
+			}
+
+			if(event.error.requestError) {
+				Notiflix.Report.failure("Error de navegación","No se puede solicitar página.<br>Comprueba tu conexión a Internet.", "Aceptar", function(){document.documentElement.classList.remove( app.getLoadingCssClass() )})
+			}
+
+			if(event.error.timeout) {
+				Notiflix.Report.warning("Demora en la red","No se pudo traer la página solicitada.<br>La conexión a Internet está tardando mucho.", "Aceptar", function(){document.documentElement.classList.remove( app.getLoadingCssClass() )})
+			}
+			return
+		}
+	})
 
 	await cella.init()
 
