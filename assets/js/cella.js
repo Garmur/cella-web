@@ -166,7 +166,7 @@ class Cella {
 					this.#db = new Cella.#SQL.Database(new Uint8Array(fileContent))
 				}
 				catch(e) {
-					Notiflix.Report.error("Sin almacén", "No hay base de datos para leer.", "Aceptar")
+					Notiflix.Report.failure("Sin almacén", "No hay base de datos para leer.", "Aceptar")
 					console.log(e)
 					return
 				}
