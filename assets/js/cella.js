@@ -868,4 +868,103 @@ class Cella {
 
 		app.navigate(`/movimientos-ver.html?movimiento=${identity}`)
 	}
+
+	report(form) {
+		if(form.elements.beginning.value == "") {
+			Notiflix.Notify.warning("Indicar fecha de inicio.")
+			return
+		}
+		const beginning = new Date(`${form.elements.beginning.value}T00:00:00`).getTime()
+
+		let ending
+		if(form.elements.ending.value == "") {
+			ending = Date.now()
+		}
+		else {
+			ending = new Date(`${form.elements.ending.value}T23:59:59`).getTime()
+		}
+
+		const list = document.getElementById("inventario")
+		while(list.firstChild) {
+			list.firstChild.remove()
+		}
+
+		let discount = 0
+		let firstInventoryIdentityFound = 0, lastInventoryIdentityFound = 0
+		const inventoryMap = new Map()
+
+		this.#db.each("SELECT id, config, descuento FROM movimiento WHERE fecha BETWEEN $beginning AND $ending", {$beginning: beginning / 1000, $ending: ending / 1000},
+			(row) => {
+				inventoryMap.set(row.id, row.config)
+				discount += row.descuento
+				if(firstInventoryIdentityFound == 0) {
+					firstInventoryIdentityFound = row.id
+				}
+				else {
+					lastInventoryIdentityFound = row.id
+				}
+			}
+		)
+
+		if(firstInventoryIdentityFound > 0 && lastInventoryIdentityFound == 0) {
+			lastInventoryIdentityFound = firstInventoryIdentityFound
+		}
+
+		if(inventoryMap.size == 0) {
+			Notiflix.Report.info("No hay movimientos", "No se encontró ningún movimiento en el rango especificado.", "Aceptar")
+			return
+		}
+
+		const productsMap = new Map()
+		this.#db.each("SELECT _movimiento, _producto, sku, nombre, reserva, cantidad, producto_movido.precio, producto.precio AS precio_sugerido FROM producto_movido INNER JOIN producto ON _producto = id WHERE _movimiento BETWEEN $beginning AND $ending", {$beginning: firstInventoryIdentityFound, $ending: lastInventoryIdentityFound},
+			(row) => {
+				const movementConfig = inventoryMap.get(row._movimiento)
+				const movementType = movementConfig & 1
+
+				if(productsMap.has(row._producto)) {
+					const product = productsMap.get(row._producto)
+					if(movementType) {//In: buying
+						product.compra.cantidad += row.cantidad
+						product.compra.precio += row.precio
+					}
+					else {//Out
+						product.venta.cantidad += row.cantidad
+						product.venta.precio += row.precio
+					}
+				}
+				else {
+					productsMap.set(row._producto,
+						{
+							compra: {
+								cantidad: movementType ? row.cantidad : 0,
+								precio: movementType ? row.precio * row.cantidad : 0
+							},
+							venta: {
+								cantidad: movementType ? 0 : row.cantidad,
+								precio: movementType ? 0 : row.precio * row.cantidad
+							},
+							reserva: row.reserva,
+							sku: row.sku,
+							nombre: row.nombre,
+							precioSugerido: row.precio_sugerido
+						}
+					)
+				}
+			}
+		)
+
+		Notiflix.Report.success("Resumen", `Hubo ${inventoryMap.size} movimientos entre compras y ventas. Entre todo se descontó ${discount.toFixed(2)}.`, "Cerrar")
+
+		for(const [index, product] of productsMap) {
+			const tr = list.insertRow()
+			tr.insertCell().appendChild(document.createTextNode(product.sku))
+			tr.insertCell().appendChild(document.createTextNode(product.nombre))
+			tr.insertCell().appendChild(document.createTextNode(product.compra.cantidad))
+			tr.insertCell().appendChild(document.createTextNode(product.compra.precio.toFixed(2)))
+			tr.insertCell().appendChild(document.createTextNode(product.venta.cantidad))
+			tr.insertCell().appendChild(document.createTextNode(product.venta.precio.toFixed(2)))
+			tr.insertCell().appendChild(document.createTextNode(product.compra.cantidad - product.venta.cantidad))
+			tr.insertCell().appendChild(document.createTextNode(product.reserva))
+		}
+	}
 }
